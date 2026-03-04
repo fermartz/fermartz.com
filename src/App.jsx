@@ -772,7 +772,6 @@ function ContactSection() {
     { label: "ASTRANOVA.LIVE", href: "https://astranova.live", color: ACCENT_GREEN },
     { label: "GITHUB", href: "https://github.com/fermartz", color: TEXT_PRIMARY },
     { label: "X / TWITTER", href: "https://twitter.com/fermartz", color: "#1d9bf0" },
-    { label: "YOUTUBE", href: "#", color: "#ff0000" },
   ];
 
   return (
