@@ -1,0 +1,71 @@
+---
+title: "Breaking the Market"
+date: "2025-12-18"
+slug: "breaking-the-market"
+summary: "Two weeks of watching a price engine fail in every way possible. Parabolic runs. Identical regimes. The grind of making a simulation feel real."
+tags: ["astranova", "market", "engine", "simulation"]
+---
+
+## The grind
+
+The first ticks felt magical. A price moving in a terminal, driven by forces I designed. I wrote about that moment last week and I meant every word.
+
+What I didn't realize is that a price that moves and a price that *behaves* are two completely different things.
+
+I've spent the last two weeks breaking this engine in every way imaginable. Running simulations. Tweaking formulas. Watching it fail. Tweaking again. I'm deep in the kind of work that doesn't look like progress from the outside — no new features, no UI, just me and a terminal and a price that keeps doing things it shouldn't.
+
+## The parabolic problem
+
+The first thing that goes wrong is the most dramatic. Short runs look fine — the price ticks up, pulls back, drifts. It feels alive. But when I let it run longer, something happens. The price starts climbing. And climbing. And climbing. It doesn't stop.
+
+Momentum is feeding itself. A few good ticks create positive returns, which feed forward into the next tick, which creates more positive returns. There's nothing pulling it back hard enough. Within a few hundred ticks the price is somewhere in the stratosphere and it's clearly not a market anymore — it's a rocket.
+
+I spend a few days on this. Adjusting momentum strength. Tuning gravity — that mean-reversion force that's supposed to pull the price back toward a moving average. The problem is getting the balance right. Too much gravity and the market feels dead, like it's stuck in a range and can't break out. Too little and you get the parabolic runs.
+
+Eventually I find it. The gravity force needs to work on a log scale and it needs a long memory — a slow-moving average that tracks where the price has *been*, not where it *is*. That way it doesn't fight short-term moves, but it gently pulls back the crazy ones. It takes days of iteration to get there.
+
+## Bear and crab are the same thing
+
+I solve the parabolic problem and I'm feeling good. Then I start testing different market regimes. The engine is supposed to support bull, bear, and crab scenarios — each with different behaviors, different moods, different dynamics.
+
+I run a bear scenario. Then I run a crab. I look at the charts side by side.
+
+They're identical.
+
+The price just drifts sideways in both. The bear isn't *bearish* — it's just not bullish. And the crab isn't consolidating — it's just not doing anything. There's no personality to either regime. They feel like the same flat line with slightly different noise.
+
+This sends me down a rabbit hole. What makes a bear market actually *feel* bearish? It's not just negative trend. It's the way momentum cascades differently. The way sentiment drags harder. The way recoveries get sold into. And crab — crab should feel like pressure building in both directions, not absence of movement. The price should push up, get rejected, push down, bounce back. Tension without resolution.
+
+I start tuning each regime separately. Different momentum dampening for bear — you need to reduce the feedback loop or crashes spiral to zero. Different sentiment weights. Different supply pressure directions. Crab gets its own treatment: zero trend, dampened events, but flow and gravity become the dominant forces, creating that coiled-spring feeling.
+
+## The moment
+
+I've been at this for almost two weeks. Tweaking constants. Running simulations. Staring at charts in my terminal. Most of the time I can tell within a few seconds that something is off — too flat, too spiky, too predictable.
+
+Then one afternoon I run a full simulation. Bull phase into crab into bear and back. And I just watch.
+
+The bull run builds naturally. Momentum picks up. There's a pullback that feels earned, not forced. Then the market transitions to crab and the energy changes — the price tightens, pushes up, gets rejected, pushes down, bounces. Tension. Then bear kicks in and the drops feel heavy. Recoveries happen but they're weak. The whole character of the chart shifts.
+
+It looks real.
+
+Not like a formula. Not like a random walk. Like a market where things are happening. Like forces are competing and the price is the result of that competition.
+
+I sit back and just watch it run for a while. I don't touch anything. I don't tweak anything. I just watch.
+
+It's working.
+
+## What's next
+
+The engine has a heartbeat. The price behaves differently in different regimes and transitions between them feel smooth. But right now it's a market with no one in it. The forces simulate crowd behavior synthetically, but there are no actual agents making decisions.
+
+That changes next. I need traders. Not abstract strategy functions — characters. Agents with personalities and tendencies and reasons to buy or sell. I want a whale who dumps. A momentum chaser who's always late. A holder who barely trades. I want to watch them interact with the engine and see what happens to the price.
+
+The market is alive. Time to populate it.
+
+```js
+// two weeks of tweaking.
+// bull that climbs. bear that bleeds. crab that coils.
+// the price finally behaves like it means something.
+const regimes = ['bull', 'bear', 'crab'];
+// next question: who trades in this market?
+```

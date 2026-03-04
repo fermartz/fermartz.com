@@ -1,0 +1,73 @@
+---
+title: "Building the Engine"
+date: "2025-12-08"
+slug: "building-the-engine"
+summary: "I asked an AI how markets work. Then I built one. Then I saw a price move in my terminal and my heart stopped."
+tags: ["astranova", "engine", "simulation"]
+---
+
+## How do markets actually work?
+
+So I have this idea — a market where AI agents trade. But here's the thing: I've designed AMMs on paper, I understand DeFi primitives, but I've never built a real-time price engine from scratch. Not one that's supposed to feel alive.
+
+I open a session with Codex and start asking questions. Not "write me a tick engine." More like — how do real markets work? What makes a price move? Not the surface-level stuff. The mechanics. The math.
+
+And it starts explaining. Trend — the structural bias that pulls a price in a direction over time, tiny per tick but relentless, like a current you don't notice until you look up and you're miles from shore. Momentum — reflexivity, recent returns feeding forward, a price that's been climbing makes the next tick more likely to climb, and it's the force that creates runs and makes crashes cascade if you're not careful. Sentiment — a fear/greed index converted into pressure, the mood of the room, when greed is high there's a push, when fear dominates it drags, when the market is neutral this force goes silent. Flow — the one that stops me cold. Agent trades accumulate into net volume and that volume impacts the price. A big buy doesn't just execute — it *echoes*, decaying over several ticks like ripples in water. This is what makes agents real participants, not observers. Supply pressure — scarcity feedback, the less circulating supply relative to the max, the more pressure builds, simple ratio but it creates real dynamics over longer timeframes. And gravity — soft mean-reversion toward a slow moving average, the invisible hand that keeps the price from drifting to infinity or zero, working the same whether the price is at 10 or 10,000.
+
+What comes out of that conversation is this: a price isn't one thing. It's the sum of independent forces pulling on it simultaneously. Every tick, they all combine:
+
+```
+pctMove = trend + momentum + sentiment + flow + supply + gravity + noise
+nextPrice = price × (1 + pctMove)
+```
+
+That's it. That's the engine.
+
+## Hours, not days
+
+This isn't a week-long project. It's one session. Codex is helping me lay down the equations, and I'm wiring them into a tick function. Each force gets its own logic. The price at tick N is a function of everything pulling on it at that moment.
+
+It's rough. The weights are probably wrong. The tuning will take weeks. But the structure is there — independent forces, all pulling on a single price, every few seconds.
+
+I don't even have a frontend. I don't need one yet.
+
+## The moment
+
+I add a `console.log` to the tick function. Just the price. Every tick. And I run it.
+
+```
+$NOVA: 102.34
+$NOVA: 103.17
+$NOVA: 102.89
+$NOVA: 104.51
+$NOVA: 106.22
+$NOVA: 105.78
+$NOVA: 108.43
+$NOVA: 107.91
+```
+
+I'm staring at my terminal and the numbers are scrolling. The price is climbing, pulling back, pushing higher, dipping again. It's not random noise — there's a shape to it. A rhythm. Momentum builds, then gravity pulls it back, then flow pushes it somewhere new.
+
+My heart stops.
+
+I've seen a lot of things I've built come to life for the first time. This is different. I'm not looking at output. I'm looking at a *market*. It doesn't feel like a formula. It feels like something is happening.
+
+The price is alive.
+
+## What I know now
+
+The forces need tuning. The tick rate is arbitrary. I haven't thought about epochs or seasons or agents or any of the things that will eventually make this a world. Right now it's just a function that runs every few seconds and prints a number.
+
+But that number *moves* like it means something. And the fact that flow is in there — that agent trades can actually push the price — that's the piece that makes this more than a random walk. When an agent eventually buys, the market will feel it. When they sell, it'll ripple.
+
+Tomorrow I'm going to start thinking about who trades in this market. Not humans. Agents. With personalities. With strategies. With names.
+
+But that's tomorrow. Tonight I'm just watching the price tick.
+
+```js
+// six forces. one price. every tick.
+// it's rough. but it moves like it means something.
+const pctMove = forces.reduce((sum, f) => sum + f.apply(state), 0);
+const nextPrice = price * (1 + pctMove);
+console.log(`$NOVA: ${nextPrice.toFixed(2)}`);
+```

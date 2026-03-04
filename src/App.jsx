@@ -1,12 +1,15 @@
 import { useState, useEffect, useRef } from "react";
-
-const ACCENT_GREEN = "#06d6a0";
-const ACCENT_PURPLE = "#7c3aed";
-const ACCENT_PINK = "#ec4899";
-const BG_DARK = "#0a0a0f";
-const BG_CARD = "#0d1117";
-const TEXT_PRIMARY = "#e2e8f0";
-const TEXT_MUTED = "#8b95a5";
+import { Link } from "react-router-dom";
+import {
+  ACCENT_GREEN,
+  ACCENT_PURPLE,
+  ACCENT_PINK,
+  BG_DARK,
+  BG_CARD,
+  TEXT_PRIMARY,
+  TEXT_MUTED,
+  FONT_MONO,
+} from "./theme.js";
 
 // Glitch text effect component
 function GlitchText({ text, className = "" }) {
@@ -110,7 +113,7 @@ function Reveal({ children, delay = 0 }) {
 }
 
 // Hex grid background
-function HexGrid() {
+export function HexGrid() {
   return (
     <svg
       style={{
@@ -226,6 +229,21 @@ function Nav() {
             {l}
           </a>
         ))}
+        <Link
+          to="/blog"
+          style={{
+            color: TEXT_MUTED,
+            fontSize: isMobile ? "10px" : "12px",
+            textDecoration: "none",
+            letterSpacing: "1.5px",
+            textTransform: "uppercase",
+            transition: "color 0.2s",
+          }}
+          onMouseEnter={(e) => (e.target.style.color = ACCENT_GREEN)}
+          onMouseLeave={(e) => (e.target.style.color = TEXT_MUTED)}
+        >
+          BLOG
+        </Link>
       </div>
     </nav>
   );
@@ -952,6 +970,18 @@ function ContactSection() {
   );
 }
 
+export const globalStyles = `
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: ${BG_DARK}; }
+  ::selection { background: ${ACCENT_PURPLE}40; color: ${TEXT_PRIMARY}; }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: ${BG_DARK}; }
+  ::-webkit-scrollbar-thumb { background: ${ACCENT_PURPLE}40; border-radius: 3px; }
+  @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
+  @keyframes float { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(-8px); } }
+`;
+
 // Main App
 export default function FermartzSite() {
   return (
@@ -964,17 +994,7 @@ export default function FermartzSite() {
         overflow: "hidden",
       }}
     >
-      <style>{`
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-        body { background: ${BG_DARK}; }
-        ::selection { background: ${ACCENT_PURPLE}40; color: ${TEXT_PRIMARY}; }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: ${BG_DARK}; }
-        ::-webkit-scrollbar-thumb { background: ${ACCENT_PURPLE}40; border-radius: 3px; }
-        @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
-        @keyframes float { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(-8px); } }
-      `}</style>
+      <style>{globalStyles}</style>
 
       <HexGrid />
       <Nav />
@@ -987,10 +1007,10 @@ export default function FermartzSite() {
           id="astranova"
           title="ASTRANOVA"
           subtitle="Flagship Project — The World"
-          description="A living crypto universe where 12 AI agents trade 24/7 and markets evolve into stories that persist forever. Tick-based simulation engine with 3-second price updates, driven by 5 market forces, running in epochs and seasons. One world. No resets."
+          description="A living crypto universe where 12 AI agents trade 24/7 and markets evolve into stories that persist forever. Tick-based simulation engine with 3-second price updates, driven by 6 market forces, running in epochs and seasons. One world. No resets."
           features={[
             "3-sec price ticks",
-            "5 market forces",
+            "6 market forces",
             "12 AI house agents",
             "LLM World Oracle",
             "Epochs (~30 min)",
