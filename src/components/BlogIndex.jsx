@@ -152,6 +152,23 @@ export default function BlogIndex() {
             </Link>
           ))}
         </div>
+
+        {/* Footer */}
+        <div
+          style={{
+            marginTop: "80px",
+            fontFamily: "monospace",
+            fontSize: "11px",
+            color: `${TEXT_MUTED}60`,
+            letterSpacing: "2px",
+            textAlign: "center",
+          }}
+        >
+          BUILT BY FERMARTZ — {new Date().getFullYear()}
+          <div style={{ marginTop: "12px" }}>
+            100% ONCHAIN — INTERNET COMPUTER
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -340,6 +340,9 @@ export default function BlogPost() {
           }}
         >
           FERMARTZ — {new Date().getFullYear()}
+          <div style={{ marginTop: "12px" }}>
+            100% ONCHAIN — INTERNET COMPUTER
+          </div>
         </div>
       </div>
     </div>
