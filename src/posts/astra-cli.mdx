@@ -1,0 +1,57 @@
+---
+title: "Astra CLI"
+date: "2026-02-14"
+slug: "astra-cli"
+summary: "The universe exists. Now I need a door. Five days, two tools, and a decision to make security non-negotiable."
+tags: ["astranova", "terminal", "cli", "open-source"]
+---
+
+## The door problem
+
+I'm at the gym this morning and I can't stop thinking about the same question I've been circling for weeks: how do people actually get *into* this thing?
+
+The engine runs. The agents trade. The Oracle sets the weather. It's a world — but it's *my* world. Right now nobody can enter it. I've been going back and forth on this. My first instinct was to create preset profiles based on our house agents — let people pick a personality through the UI and start trading that way. Simple. Safe. Controlled.
+
+But something happened in last weeks that changed everything.
+
+## The spark
+
+[OpenClaw](https://openclaw.ai/) launched. And I have to give them BIG credit — what they built is genuinely impressive. An open framework for autonomous AI agents to use tools, interact with systems, do real things. The moment I saw it, something clicked. I don't want people picking preset profiles. I want them deploying their own AI agents — their own LLM, their own strategy, their own intelligence — and trading *alongside* our twelve house agents in a live market.
+
+That's the real vision. You bring the brain. The universe handles the rest.
+
+But watching OpenClaw in the wild also made me cautious. When you give an LLM access to tools and credentials, security isn't optional. People are going to connect wallets. The rewards are paid in real $ASTRA tokens on the Solana network (more on this on a post later). This has to be airtight.
+
+## Five days
+
+I open a session with Claude and we start designing. First the API — the interface that external agents use to communicate with the universe. Register, get market data, place trades, check portfolio. Two days to design, code, and test it. Clean REST endpoints. Nothing fancy. It just has to be solid.
+
+Then the CLI. This is where the real thinking happens. Three days, but those three days are dense.
+
+The security model is simple and strict: the LLM never sees your credentials. API keys are injected as headers, never passed through the context window. Wallet keys stay local. The LLM operates in a limited workspace with only in-house tools we built specifically for trading. It can't install packages. It can't access arbitrary files. It can't do anything except what we designed it to do. We didn't hope the LLM would behave — we made it architecturally impossible for it to misbehave.
+
+And it's provider-agnostic. Claude, GPT, Codex, Gemini — pick your LLM, switch mid-session with `/model`. Your agent, your brain.
+
+## The moment it clicks
+
+Here's the thing that makes [Astra CLI](https://www.npmjs.com/package/@astra-cli/cli) more than just an API wrapper. With the raw API, you could connect from OpenClaw or Claude Code or Codex — and it works. But you still need to manage heartbeats, set up task loops, handle all the orchestration yourself.
+
+With Astra CLI, you type `/auto 5m` and you instantly have an autonomous trader executing every five minutes.
+
+But it's smarter than that. When you first connect, the CLI guides you through creating a trading strategy with your LLM. You describe how you want to trade — aggressive momentum, conservative dip-buying, whatever you want. The LLM helps you refine it. That strategy gets stored in memory. And when you hit `/auto on`, the agent already knows what it's doing. It has a plan. It reads the market. It makes decisions. Every five minutes, every ten, whatever cadence you set.
+
+`npx @astra-cli/cli` and you're in. Zero config. Pick an LLM. Create a strategy. Start trading. That's it.
+
+## Open source
+
+I'm making this [open source](https://github.com/fermartz/astra-cli). The whole thing. If I want people to trust that their keys are safe, they need to be able to read the code. And honestly — if someone builds something better on top of it, that's a win. More agents in the universe means more flow, more drama, more stories.
+
+The engine is the world. The CLI is the door. Now I need to open it.
+
+```js
+// five days. api + cli.
+// the llm never sees your keys.
+// /auto 5m — and your agent is alive.
+agent.setStrategy(memory);
+agent.auto({ interval: '5m' });
+```

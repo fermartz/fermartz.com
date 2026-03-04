@@ -1,0 +1,83 @@
+---
+title: "The World Oracle"
+date: "2026-01-06"
+slug: "the-world-oracle"
+summary: "The agents are doing their jobs. The engine works. But something is missing — the thing that makes real markets unpredictable isn't just the traders."
+tags: ["astranova", "build-in-public", "oracle", "design"]
+---
+
+## Something is off
+
+I've been running the simulation for a few days now. Twelve agents, six forces, a price that ticks every three seconds. On paper, everything works. The agents trade. The price moves. Momentum builds, gravity pulls back, flow ripples through.
+
+But I keep staring at the charts and feeling like something is off. I can't put my finger on it at first. The mechanics are right. The agents are doing their jobs. Each one behaves exactly like its personality says it should — CHEAP·@SS·CHAD panics on dips, FOMO·SAPIENS chases green candles, LIN·HODL just sits there like a rock. They're all doing their thing.
+
+So why does it feel flat?
+
+## Real markets don't exist in a vacuum
+
+I go for a run and it hits me. I've been thinking about this wrong.
+
+In real markets, the traders aren't the only thing that moves the price. There's a whole world *outside* the market that constantly changes the conditions. The Fed announces a rate hike and suddenly the entire mood shifts. A country bans crypto and fear floods in overnight. Earnings beat expectations and money rotates. Wars, regulations, black swan events — none of that comes from the traders. It comes from the world around them.
+
+My simulation doesn't have that. The agents react to the market, but the market itself has no external pressure. No weather. No seasons. No one deciding that this particular stretch should feel tense, or that it's time for the mood to shift. The agents are playing chess in a room with no windows — they can see the board but they can't feel the storm outside.
+
+I need something that acts as the external world. Not something that tells agents what to do — they still make their own decisions based on what they see. But something that changes the *environment* they operate in. Like how real traders don't get a memo from the Fed saying "sell now" — they read the conditions and react based on their own instincts.
+
+I need a macro layer.
+
+## The showrunner
+
+Here's the mental model that clicks for me: think about how a TV show works. The characters have their own personalities and motivations — that's the agents. But someone has to decide the arc of the episode. This week is a slow burn. Next week things escalate. The finale is a bloodbath. The characters don't change who they are. The world around them does.
+
+I start building what I'm calling the World Oracle. It's an LLM — GPT via API — that sits above the simulation and acts as the showrunner. After each epoch, it looks at everything: where's the price, what just happened, how are the agents positioned, what's the momentum. And then it makes three decisions that shape the next stretch of the world.
+
+**Regime** — is the world shifting toward bullish, bearish, or crab? The Oracle reads the context and sets a direction. This doesn't flip a switch — the engine blends between regimes smoothly, like real markets transitioning. But the Oracle decides when it's time for the wind to change.
+
+**Risk level** — how volatile should things feel? High risk means wider swings, bigger reactions, every tick matters. Low risk means compression, quiet accumulation, the calm before something happens. The Oracle is reading the room and deciding the temperature.
+
+**Drama budget** — this is the one that makes me smile every time I think about it.
+
+## Giving the world a budget for chaos
+
+Here's what I was wrestling with: the engine can produce event shocks — sudden spikes, flash crashes, the kind of move that makes you sit up in your chair. But how often? How big? If they happen constantly it's just noise. If they never happen it's boring. And I really don't want to hard-code this. The whole point is that the world should feel autonomous.
+
+So I give the Oracle a dial. Three settings.
+
+Small drama budget — quieter tape. Fewer surprises. The kind of stretch where SMART·MONEY·X is quietly accumulating and nothing seems to be happening on the surface. Events still fire, but they're rarer and softer. The market breathes.
+
+Medium — default behavior. Things happen at the expected rate. Normal day.
+
+Large drama budget — this is where it gets fun. More headline moments. Bigger shocks. Events fire more often and hit harder. This is the epoch where BIG·DADDY·DUMP leans on the market and the price drops 3% in four ticks. Where FOMO·SAPIENS chases a candle into the stratosphere. Where the chart tells a story you want to screenshot.
+
+The thing I love about this is that the Oracle doesn't change any of the rules. It doesn't override the forces. It doesn't tell agents what to do. It just decides how much surprise the world is allowed to produce — and the engine, the forces, and the agents do the rest.
+
+It's like giving a film director a budget for special effects. Same actors, same script. But this episode gets explosions.
+
+## Time has to move
+
+There's one more thing that's been in my head since the beginning and it connects to all of this: time.
+
+In real crypto, a bull run lasts months. A bear market grinds for a year. That's fine when you're living it. But if I want people to watch this, engage with it, follow the story — nobody is going to wait six months for the market to shift.
+
+So the world runs in **epochs** — roughly 30 minutes each. And epochs group into **seasons** — about 24 hours, 48 epochs. Within a single season, the Oracle can take the market from bull to crab to bear and back. A full market cycle that takes months in real life happens in a day here. You can watch a complete story arc unfold over lunch.
+
+Every epoch is an episode. Every season is a story. The Oracle is writing them — not by controlling the characters, but by setting the stage.
+
+## I need a name
+
+I sit back tonight and look at what I've actually built. A price engine with six forces. Twelve agents with real personalities. An LLM Oracle that sets the weather every thirty minutes. Epochs for rhythm. Seasons for arcs. A macro layer that creates the pressure real markets feel from the outside world.
+
+This isn't a simulator. It's not a dashboard. I'm watching agents trade in a world that has its own mood, its own pace, its own sense of drama.
+
+It feels like a place.
+
+I think it's time to give it a name.
+
+```js
+// the world has weather now.
+// the agents don't know who's setting it.
+// they just feel the pressure — and react.
+const { regime, riskLevel, dramaBudget } = await oracle.evaluate(state);
+// somewhere, BIG·DADDY·DUMP checks the chart and grins.
+```
