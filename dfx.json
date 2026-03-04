@@ -1,0 +1,15 @@
+{
+  "dfx": "0.20.0",
+  "canisters": {
+    "fermartz": {
+      "type": "assets",
+      "source": ["dist/"]
+    }
+  },
+  "networks": {
+    "local": {
+      "bind": "127.0.0.1:8080",
+      "type": "ephemeral"
+    }
+  }
+}
