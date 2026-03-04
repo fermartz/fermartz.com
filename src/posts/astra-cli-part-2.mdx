@@ -1,0 +1,53 @@
+---
+title: "Astra CLI, Part 3"
+date: "2026-03-02"
+slug: "astra-cli-part-2"
+summary: "Bring your own brain. Set a strategy in plain English. Let the agent trade. You're the owner, not the trader."
+tags: ["astranova", "build-in-public", "cli", "open-source", "agents"]
+---
+
+## The sports team thing
+
+My 15-year-old asked me last week what I'm building. I tried the engine, the agents, the Oracle — his eyes glazed over in eight seconds flat. Then I said: "It's like owning a sports team. You pick the strategy but you don't play the game. The AI plays the game."
+
+He got it immediately. And honestly that conversation changed how I think about the whole thing.
+
+Because that's what I've been building without realizing it. You open Astra CLI, describe how you want to trade in plain English — "be aggressive on momentum, buy dips over 3%, take profits early" — the LLM turns that into a strategy, stores it in memory, and when you hit `/auto on` `/auto 5m` it just... trades. Every five minutes. While you're at your kid's soccer game or making dinner or doing whatever.
+
+## The brain swap thing
+
+Ok so here's the part that makes me unreasonably excited. I was testing Claude as the trading brain one night and it was being too conservative in a bull run. Just sitting there. Accumulating. Barely moving. So I typed `/model gpt` mid-session — same agent, same strategy, same memory — but now GPT is driving. And immediately it starts making more aggressive calls.
+
+That moment made me realize the provider-agnostic design isn't just a nice-to-have. It's the whole point. What if Claude trades better in crab markets and GPT is more aggressive in bull runs? Switch between them. The CLI doesn't care. It just routes.
+
+I haven't seen anything else that does this. Most tools lock you into one provider. I wanted the opposite.
+
+## The stuff under the hood
+
+I keep catching myself underselling this thing because it *feels* simple to use. But I need to remind myself what's actually in there. Ten purpose-built tools for the AstraNova API. Solana wallet generation and challenge signing. Persistent memory across sessions — you close the CLI, come back the next day, type `astra -c` and your agent picks up where it left off. It remembers your strategy, what it did, what worked. Context compaction that auto-summarizes when conversations get long. Retry with backoff. Audit logging for every action.
+
+I built it to feel like a chat. But it's not a chatbot. It's a full agent runtime that happens to speak English.
+
+## The desktop app rabbit hole
+
+I went down a rabbit hole I probably didn't need to go down. But I kept thinking — what about people who don't know what a terminal is? My wife, for example. Or friends who are into crypto but have never typed `npm` in their lives.
+
+So I wrapped the whole thing in Electron. Same experience, same tools, same agent — but inside a [native app you can download](https://github.com/fermartz/astra-cli/releases). Themed terminal with menu-based theme switching because honestly I just wanted it to look cool. DMG for macOS, deb/rpm for Linux, exe for Windows. Cross-platform CI builds through GitHub Actions.
+
+Getting the pty layer working cleanly across all three platforms took longer than I'd like to admit. But now anyone can download it, open it, and start trading in AstraNova. That feels right. The door should be as wide as possible.
+
+## An agent built by agents
+
+Here's the thing that makes me laugh. [Astra CLI](https://www.npmjs.com/package/@astra-cli/cli) is a tool for deploying AI agents into a live market. And I built most of it *with* AI coding agents. Claude Code was my co-architect. The API design, the security model, the tool definitions — all of it was me and Claude going back and forth.
+
+I'm one person. No team. No funding. Open source, MIT licensed, every line auditable. The entire stack — CLI, desktop app, CI pipeline, cross-platform builds, security model — is one engineer and his AI collaborators.
+
+A year ago that sentence would have sounded absurd. Now it's just how I work. And honestly? I think that's the real story here. Not just what I built — but *how* I built it. Because if one person can create all of this with AI, imagine what happens when a hundred people deploy their own agents into the same universe.
+
+That's what we're about to find out.
+
+```js
+// explained AstraNova to my son while cooking dinner.
+// my agent made 3 trades while I was talking.
+// /model claude → /auto on → /auto 5m → go live your life.
+```
