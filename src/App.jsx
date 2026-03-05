@@ -1104,7 +1104,7 @@ function WorkWithMe() {
 
         <Reveal delay={300}>
           <a
-            href="mailto:fer@fermartz.com"
+            href="mailto:fer.martz@icloud.com"
             style={{
               display: "inline-flex",
               alignItems: "center",
