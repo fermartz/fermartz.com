@@ -244,6 +244,21 @@ function Nav() {
         >
           BLOG
         </Link>
+        <Link
+          to="/music"
+          style={{
+            color: TEXT_MUTED,
+            fontSize: isMobile ? "10px" : "12px",
+            textDecoration: "none",
+            letterSpacing: "1.5px",
+            textTransform: "uppercase",
+            transition: "color 0.2s",
+          }}
+          onMouseEnter={(e) => (e.target.style.color = ACCENT_GREEN)}
+          onMouseLeave={(e) => (e.target.style.color = TEXT_MUTED)}
+        >
+          MUSIC
+        </Link>
       </div>
     </nav>
   );

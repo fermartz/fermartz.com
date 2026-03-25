@@ -1,0 +1,346 @@
+{
+  "genres": {
+    "synthpop": {
+      "id": "synthpop",
+      "label": "Synthpop",
+      "accent": "#7b3fc4",
+      "iconBg": "#1a0d2e",
+      "iconColor": "#9b5fe4",
+      "tagLabel": "SYNTH"
+    },
+    "house": {
+      "id": "house",
+      "label": "House",
+      "accent": "#3f94c4",
+      "iconBg": "#0d1520",
+      "iconColor": "#3f94c4",
+      "tagLabel": "HOUSE"
+    },
+    "rock-es": {
+      "id": "rock-es",
+      "label": "Rock en Español",
+      "accent": "#7fe040",
+      "iconBg": "#0d1a09",
+      "iconColor": "#7fe040",
+      "tagLabel": "ROCK ES"
+    },
+    "ambient": {
+      "id": "ambient",
+      "label": "Ambient",
+      "accent": "#3fc4a0",
+      "iconBg": "#0d1a1a",
+      "iconColor": "#3fc4a0",
+      "tagLabel": "AMBIENT"
+    },
+    "french-lounge": {
+      "id": "french-lounge",
+      "label": "French Lounge",
+      "accent": "#e879a8",
+      "iconBg": "#1a0d15",
+      "iconColor": "#e879a8",
+      "tagLabel": "LOUNGE"
+    }
+  },
+  "playlists": [
+    {
+      "id": "midnight-snack",
+      "name": "Rituals In The Mist",
+      "description": "Slow sidechain pulse and Spanish close vocals",
+      "icon": "MS",
+      "genre": "synthpop",
+      "tags": ["SYNTH", "SPANISH", "DARK", "MINIMAL"],
+      "tracks": [
+        {
+          "id": "cuerpo-en-fuga",
+          "num": "01",
+          "name": "Cuerpo en Fuga",
+          "style": "Dark Minimal Synthpop · Drifting",
+          "genre": "synthpop",
+          "duration": "3:28",
+          "url": "/tracks/cuerpo-en-fuga.mp3",
+          "notes": "Male raspy voice, Spanish, dark minimal synthpop. Slow heavy tempo with a fragmented groove — irregular kick accents and subtle swing, no steady pulse. Deep analog bass drifts between sustained tones and brief distorted swells, never settling into a pattern. Verses are wide and hypnotic, built on evolving pads and distant metallic resonance with long decay — tension lives in the empty space between phrases. Pre-chorus dissolves into an ambient wash of reversed textures and low-frequency rumble rather than building. Chorus is restrained and haunting: stripped percussion, wide cold pads, and a simple melancholic synth motif that floats more than lands. Mid-song instrumental section features detuned synth layers and slow analog lead lines, unstable and expressive. Vocals sit intimate and close, dry with light saturation and sparse delay throws — no reverb wash."
+        },
+        {
+          "id": "animal-nocturno",
+          "num": "02",
+          "name": "Animal Nocturno",
+          "style": "Dark Minimal Synthpop · Predatory",
+          "genre": "synthpop",
+          "duration": "3:41",
+          "url": "/tracks/animal-nocturno.mp3",
+          "notes": "Male raspy voice, Spanish, dark minimal synthpop. Slow and weighted tempo, fragmented groove driven by irregular kick placement and a lurking swing — no steady pulse, more of a stalking rhythm. Bass is deep and sustained with slight distortion, moving in long drifting tones that feel like they're circling rather than advancing. Verses are sparse and coiled, carried by evolving pads, distant metallic percussion hits, and decaying textures — atmospheric and tense, silence used as an instrument. Pre-chorus drops into ambient space with reversed sounds, sub-bass rumble, and granular noise instead of any traditional build. Chorus opens into a cold, minimal expanse: barely-there drums, wide haunting pads, and a melancholic lead synth tracing a simple motif — no lift, just slow expansion. Mid-song instrumental break with analog lead improvisation, slightly detuned and cinematic, raw and searching. Vocals are close and dry, lightly saturated, with occasional delay throws cutting through the dark."
+        },
+        {
+          "id": "sombra-magnetica",
+          "num": "03",
+          "name": "Sombra Magnética",
+          "style": "Dark Minimal Synthpop · Fragmented",
+          "genre": "synthpop",
+          "duration": "3:34",
+          "url": "/tracks/sombra-magnetica.mp3",
+          "notes": "Male raspy voice, Spanish, dark minimal synthpop identity, cohesive and distinctive band-like sound with a fresh sonic direction and new composition. Tempo slower and weightier, with a fragmented groove replacing a steady pulse, irregular kick accents with subtle swing. Bass is deeper and more sustained, occasionally saturated or slightly distorted instead of repeating motifs. Verses are sparse, hypnotic, and atmospheric, driven by evolving pads and distant metallic textures — less rhythmic and more suspended, with tension created through silence, decay, and restraint. Pre-chorus dissolves into ambient space rather than building, using reversed elements, low-frequency rumble, and subtle noise movement instead of traditional risers. Chorus opens with contrast: minimal drums, wide haunting pads, and a melancholic lead synth carrying a simple emotional motif, avoiding any dramatic or explosive lift. Includes a mid-song instrumental section."
+        },
+        {
+          "id": "ruido-interior",
+          "num": "04",
+          "name": "Ruido Interior",
+          "style": "Dark Minimal Synthpop · Cinematic",
+          "genre": "synthpop",
+          "duration": "3:52",
+          "url": "/tracks/ruido-interior.mp3",
+          "notes": "Male raspy voice, Spanish, dark minimal synthpop. Slow and heavy tempo with a fragmented groove — irregular kick accents and subtle swing, no steady pulse. Deep sustained analog bass with slight distortion and drifting tones, not repetitive but an evolving low-end presence. Verses are sparse and hypnotic, driven by wide evolving pads, distant metallic percussion, and long decay textures — very atmospheric and restrained, tension built through silence and space. Pre-chorus dissolves into ambient transition using reversed sounds, low-frequency rumble, and subtle noise textures instead of risers. Chorus is minimal and haunting: stripped drums, wide cold pads, melancholic lead synth with a simple emotional motif — no big drop, more of an open expansion. Mid-song instrumental section with analog lead improvisation or detuned synth layers, slightly unstable, expressive, and cinematic. Vocals are intimate, close, dry, with light saturation and occasional delay throws — no heavy reverb."
+        },
+        {
+          "id": "atraccion",
+          "num": "05",
+          "name": "Atracción",
+          "style": "Dark Minimal Synthpop · Motorik",
+          "genre": "synthpop",
+          "duration": "3:01",
+          "url": "/tracks/atraccion.mp3",
+          "notes": "Male raspy voice, Spanish, dark minimal synthpop band identity but new composition and structure. Tempo slightly faster with a subtle motorik pulse, syncopated kick pattern instead of steady sidechain. Analog bass moves in short repeating motifs with occasional slides. Verses feel more rhythmic and forward with percussive synth stabs and tighter groove. Drums use muted electronic toms and off-beat hi-hats instead of sparse clicks. Pre-chorus introduces tension with rising arpeggiator and filtered noise rhythm. Chorus opens wider and more emotional with layered pads and counter-melody synth. Bridge strips drums and introduces atmospheric texture before final lift. Male vocal close and dry with slight saturation, subtle delay throws instead of plate reverb."
+        },
+        {
+          "id": "llamame",
+          "num": "06",
+          "name": "Llámame",
+          "style": "Dark Minimal Synthpop · Broken",
+          "genre": "synthpop",
+          "duration": "3:32",
+          "url": "/tracks/llamame.mp3",
+          "notes": "Male raspy voice, Spanish, dark minimal synthpop identity — same band but a different sonic direction and composition. Tempo slightly slower and heavier with a broken groove instead of motorik pulse. Irregular kick accents and subtle swing. Bass is deeper and more sustained with occasional distorted textures rather than repeating motifs. Verses feel more spacious and hypnotic, driven by evolving pads and distant metallic percussion — less rhythmic and more atmospheric, with tension created through silence and restraint. Pre-chorus dissolves into ambient space using reversed textures and low-frequency rumble instead of rising arpeggiators. Chorus hits with contrast: minimal drums, wide haunting pads, and a melancholic lead synth carrying a simple but emotional motif. Mid-song instrumental section with analog lead improvisation or detuned synth textures to break song predictability."
+        },
+        {
+          "id": "vistete",
+          "num": "07",
+          "name": "Vístete",
+          "style": "Dark Minimal Synthpop",
+          "genre": "synthpop",
+          "duration": "2:50",
+          "url": "/tracks/vistete.mp3",
+          "notes": "Man voice, Spanish, dark minimal synthpop built on a slow sidechain pulse and cold analog bass. Male vocals sit close and dry, just a hint of plate reverb. Verses ride a narrow stereo field with sparse drum clicks and distant moody pads. Chorus widens subtly with low harmonies and a slightly brighter pad bloom, keeping dynamics restrained but undeniable. Occasional filtered noise swells and synth swells underline key phrases, with a late-song lift using octave bass and gentle toms to deepen the sense of quiet authority and lingering memory."
+        }
+      ]
+    },
+    {
+      "id": "drift-house",
+      "name": "Progressive Drift",
+      "description": "Late-night warehouse grooves and hypnotic loops",
+      "icon": "DH",
+      "genre": "house",
+      "tags": ["HOUSE", "DEEP", "HYPNOTIC", "INSTRUMENTAL"],
+      "tracks": [
+        {
+          "id": "soft-pressure",
+          "num": "01",
+          "name": "Soft Pressure",
+          "style": "Progressive House · Trance Crossover",
+          "genre": "house",
+          "duration": "4:13",
+          "url": "/tracks/soft-pressure.mp3",
+          "notes": "Late-90s deep progressive house / trance crossover with a hypnotic club groove and warm analog feel. Steady 4/4 pulse with subtle swing and a tight rolling low-end. Elastic bassline with filter movement evolving over time. Detuned organ-like analog lead carries an emotional, repetitive motif. Soft dreamy pads with slow modulation create a spacious late-night atmosphere. Crisp minimal percussion with classic hats, light shakers, and delayed claps. The only track in the set with female airy vocals — soft hums and breathy phrases used as texture. Leans progressive where the others lean deep: longer transitions, more melodic content, and a nostalgic trance-adjacent warmth that sets it apart."
+        },
+        {
+          "id": "pulse",
+          "num": "02",
+          "name": "Pulse",
+          "style": "Deep House · Warehouse Trance",
+          "genre": "house",
+          "duration": "5:58",
+          "url": "/tracks/pulse.mp3",
+          "notes": "Deep early-90s house groove with rolling synth bass, soft-filtered pads, and crisp hats. Very sparse male vocals used as texture — barely words, more like breath and tone. Long evolving sections with subtle filter sweeps and delayed vocal chops drifting in and out to sustain a late-night warehouse trance. Kick stays steady and understated as elements slowly morph. The longest track in the set — patient, meditative, with dubby stabs and reverb tails that open up vast empty space."
+        },
+        {
+          "id": "3-am",
+          "num": "03",
+          "name": "3 A.M.",
+          "style": "Underground House · Vocal Chops",
+          "genre": "house",
+          "duration": "3:10",
+          "url": "/tracks/3-a.m.mp3",
+          "notes": "Late-90s underground house track with a hypnotic loop-driven groove. Tight, punchy four-on-the-floor kick with tense rolling bassline, crisp hats, and short detuned synth stabs that grow in intensity. Male chopped vocal phrases filtered and delayed, circling around insomnia and obsession. Slow-burn arrangement: elements drop in and out to build pressure, subtle risers and panned percussive hits keep the floor wired and locked in. Funk-influenced pocket with raw, gritty energy."
+        },
+        {
+          "id": "neon-warehouse",
+          "num": "04",
+          "name": "Neon Warehouse",
+          "style": "Deep House · Dubby",
+          "genre": "house",
+          "duration": "4:53",
+          "url": "/tracks/neon-warehouse.mp3",
+          "notes": "Deep early-90s house groove with rolling synth bass, soft-filtered pads, and crisp hats. Very sparse male vocals used as texture. Long evolving sections with subtle filter sweeps and delayed vocal chops drifting in and out. Compared to Pulse, leans more into the dub side — heavier reverb tails, more prominent dubby stabs, and a slightly warmer low-end that gives it a more physical, room-filling presence."
+        },
+        {
+          "id": "wont-let-go",
+          "num": "05",
+          "name": "Won't Let Go",
+          "style": "Underground House · Tension Build",
+          "genre": "house",
+          "duration": "3:45",
+          "url": "/tracks/wont-let-go.mp3",
+          "notes": "Late-90s underground house track with a hypnotic loop-driven groove. Tight punchy four-on-the-floor kick with tense rolling bassline, crisp hats, and short detuned synth stabs that grow in intensity. Male chopped vocal phrases filtered and delayed, circling around insomnia and obsession. Slow-burn arrangement with elements dropping in and out to build pressure. Compared to 3 A.M., leans harder into the tension — longer builds, more aggressive risers, and panned percussive hits that keep tightening the groove."
+        }
+      ]
+    },
+    {
+      "id": "ruta-perdida",
+      "name": "Lost Route",
+      "description": "Spanish rock meets chill samba wave on the lost route",
+      "icon": "RP",
+      "genre": "rock-es",
+      "tags": ["SPANISH", "ROCK", "CHILLWAVE", "SAMBA"],
+      "tracks": [
+        {
+          "id": "rubia-suicida",
+          "num": "01",
+          "name": "Rubia Suicida",
+          "style": "Soft Rock · Raw",
+          "genre": "rock-es",
+          "duration": "4:22",
+          "url": "/tracks/rubia-suicida.mp3",
+          "notes": "Male voice, soft rock in Spanish with guitar, saxophone, bass, and synth. The rawest and most emotionally direct track in the set — guitar sits further forward, vocals carry more weight, and the arrangement leans into tension rather than drift. The longest rock track, giving the instruments room to breathe and build."
+        },
+        {
+          "id": "todo-se-detiene",
+          "num": "02",
+          "name": "Todo Se Detiene",
+          "style": "Soft Rock · Suspended",
+          "genre": "rock-es",
+          "duration": "3:17",
+          "url": "/tracks/todo-se-detiene.mp3",
+          "notes": "Male voice, soft rock in Spanish with guitar, saxophone, bass, and synth. Where Rubia Suicida pushes forward, this one holds still — the title means 'everything stops.' More restrained dynamics, spacious arrangement, and a sense of suspension. The quietest rock moment on the playlist."
+        },
+        {
+          "id": "dos-mundos",
+          "num": "03",
+          "name": "Dos Mundos",
+          "style": "Soft Rock · Saxophone",
+          "genre": "rock-es",
+          "duration": "3:01",
+          "url": "/tracks/dos-mundos.mp3",
+          "notes": "Spanish male voice over soft rock with guitar, saxophone, bass, and synth. The first track in the set to introduce sax — it cuts through the mix with a warm, expressive tone. More structured than the chillwave openers, with clear verse-chorus movement and a rock backbone."
+        },
+        {
+          "id": "morena-mia",
+          "num": "04",
+          "name": "Morena Mía",
+          "style": "Soft Rock · Chillwave Fusion",
+          "genre": "rock-es",
+          "duration": "4:22",
+          "url": "/tracks/morena-mia.mp3",
+          "notes": "Male voice, soft rock in Spanish with guitar, saxophone, bass, synth, and chillwave textures. The closer that brings the playlist full circle — merges the samba-influenced chillwave of the opening tracks with the rock instrumentation of the middle section. Synth pads return alongside the guitar and sax, creating a warm hybrid that ties the whole journey together."
+        },
+        {
+          "id": "buscando-mares",
+          "num": "05",
+          "name": "Buscando Mares",
+          "style": "Chillwave Samba · Dreamy",
+          "genre": "rock-es",
+          "duration": "3:44",
+          "url": "/tracks/buscando-mares.mp3",
+          "notes": "Dreamy synths with smooth guitars over a chillwave samba groove. Male vocals, soft percussion, Spanish lyrics. Builds on Viajero Solitario's foundation by adding guitar layers and lush synth pads — warmer and more melodic, like the samba found a beach to settle into."
+        },
+        {
+          "id": "viajero-solitario",
+          "num": "06",
+          "name": "Viajero Solitario",
+          "style": "Chillwave Samba",
+          "genre": "rock-es",
+          "duration": "2:40",
+          "url": "/tracks/viajero-solitario.mp3",
+          "notes": "Chillwave samba in Spanish. The most stripped-back track in the set — pure samba rhythm meets hazy synth wash. No guitars, no sax, just percussion, voice, and atmosphere. Sets the mood before the instrumentation builds across the playlist."
+        }
+      ]
+    },
+    {
+      "id": "un-soir-avec-kiki",
+      "name": "Un Soir Avec Kiki",
+      "description": "Late-night moments with Kiki — whispered conversations and fleeting touches drifting through deep house grooves between Paris lights and coastal nights",
+      "icon": "KK",
+      "genre": "french-lounge",
+      "tags": ["FRENCH", "LOUNGE", "HOUSE"],
+      "tracks": [
+        {
+          "id": "minuit-avec-kiki-parlee",
+          "num": "01",
+          "name": "Minuit avec Kiki (Parlée)",
+          "style": "French Lounge · Spoken",
+          "genre": "french-lounge",
+          "duration": "2:49",
+          "url": "/tracks/minuit-avec-kiki-parlee.mp3",
+          "notes": "Spoken-word French female vocal over a deep minimal house groove. Intimate and close, as if whispered across a pillow. Soft sidechain pulse, warm sub-bass, and sparse percussive textures. The voice drifts between phrases with no rush — atmospheric pads fill the space between words. Late-night Parisian mood, hypnotic and restrained."
+        },
+        {
+          "id": "vue-sur-paris-chantee",
+          "num": "02",
+          "name": "Vue Sur Paris (Chantée)",
+          "style": "French Lounge · Vocal",
+          "genre": "french-lounge",
+          "duration": "4:04",
+          "url": "/tracks/vue-sur-paris-chantee.mp3",
+          "notes": "Sung French female vocal over lush deep house. Melodic and wistful, with a wide stereo field of shimmering pads and gentle chord progressions. Kick is soft but present, bass is round and warm. The vocal carries a simple haunting melody that lingers — feels like watching city lights from a rooftop at 2am. Subtle delay and reverb on the voice give it distance and depth."
+        },
+        {
+          "id": "distance-fragile",
+          "num": "03",
+          "name": "Distance Fragile",
+          "style": "French Lounge · Ethereal",
+          "genre": "french-lounge",
+          "duration": "2:41",
+          "url": "/tracks/distance-fragile.mp3",
+          "notes": "Delicate French vocal over a stripped-back deep house foundation. The most fragile track in the set — barely-there percussion, floating synth textures, and a voice that sounds like it might disappear at any moment. Bass pulses gently underneath, more felt than heard. Tension built through restraint and negative space."
+        },
+        {
+          "id": "reste-encore",
+          "num": "04",
+          "name": "Reste Encore",
+          "style": "French Lounge · Intimate",
+          "genre": "french-lounge",
+          "duration": "2:40",
+          "url": "/tracks/reste-encore.mp3",
+          "notes": "French female vocal, warm and pleading over a slow deep house groove. The arrangement is minimal but emotionally direct — soft kick, muted hi-hats, and a bass line that breathes with the vocal phrasing. Pads swell gently during the chorus, creating a sense of longing. The most emotionally exposed moment on the playlist."
+        },
+        {
+          "id": "minuit-avec-kiki-chantee",
+          "num": "05",
+          "name": "Minuit avec Kiki (Chantée)",
+          "style": "French Lounge · Sung",
+          "genre": "french-lounge",
+          "duration": "2:41",
+          "url": "/tracks/minuit-avec-kiki-chantee.mp3",
+          "notes": "The sung counterpart to the spoken Minuit — same deep house backbone but now the voice carries melody instead of words. Warmer and more musical, with layered vocal harmonies drifting in during the second half. The groove is slightly more pronounced, giving the track a gentle forward motion that the spoken version deliberately avoids."
+        },
+        {
+          "id": "cote-dazur",
+          "num": "06",
+          "name": "Côte d'Azur",
+          "style": "French Lounge · Coastal",
+          "genre": "french-lounge",
+          "duration": "3:25",
+          "url": "/tracks/cote-dazur.mp3",
+          "notes": "French female vocal over a sun-warmed deep house groove with a coastal drift. Brighter and more open than the Parisian tracks — synth textures shimmer like light on water, percussion has a loose organic feel. The bass is rounder and more playful. Feels like the playlist stepped outside for air and found the Mediterranean."
+        },
+        {
+          "id": "vue-sur-paris-parlee",
+          "num": "07",
+          "name": "Vue Sur Paris (Parlée)",
+          "style": "French Lounge · Spoken",
+          "genre": "french-lounge",
+          "duration": "3:24",
+          "url": "/tracks/vue-sur-paris-parlee.mp3",
+          "notes": "Spoken French female vocal over deep house — the companion piece to the sung version. Same harmonic foundation but the voice now narrates rather than sings, creating a more cinematic and introspective mood. The mix is darker and more spacious, with longer reverb tails and distant melodic fragments floating behind the words."
+        },
+        {
+          "id": "rien-ne-dure",
+          "num": "08",
+          "name": "Rien Ne Dure",
+          "style": "French Lounge · Closing",
+          "genre": "french-lounge",
+          "duration": "4:59",
+          "url": "/tracks/rien-ne-dure.mp3",
+          "notes": "French female vocal over a slow, dissolving deep house groove — the closing meditation of the Kiki collection. The longest track, unhurried and fading. Bass recedes into warmth, pads stretch into long decaying chords, and the voice carries a bittersweet refrain that accepts impermanence. Percussion thins out gradually until only voice and atmosphere remain. Nothing lasts, and the track knows it."
+        }
+      ]
+    }
+  ]
+}

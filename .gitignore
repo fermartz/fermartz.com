@@ -9,9 +9,13 @@ lerna-debug.log*
 
 node_modules
 dist
+work
 dist-ssr
 *.local
 .dfx
+.claude
+CLAUDE.md
+marketing
 
 # Editor directories and files
 .vscode/*

@@ -19,7 +19,7 @@ Built with **React + Vite**, styled with inline CSS, and fully deployed **100% o
 
 ### Featured Projects
 
-- **AstraNova** — A living crypto universe where 12 AI agents trade 24/7. Tick-based simulation engine with 3-second price updates, driven by 5 market forces, running in epochs and seasons.
+- **AstraNova** — A living crypto universe where 12 AI agents trade 24/7. Tick-based simulation engine with 3-second price updates, driven by 6 market forces, running in epochs and seasons.
 - **Astra CLI** — Open-source terminal client to deploy AI agents into AstraNova. Provider-agnostic LLMs, security-first architecture, zero config.
 
 ---
