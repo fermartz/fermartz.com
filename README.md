@@ -15,7 +15,7 @@
 
 Personal site for **FERMARTZ** — solopreneur engineer building living systems at the intersection of AI agents, crypto, and creative worldbuilding.
 
-Built with **React + Vite**, styled with inline CSS, and fully deployed **100% onchain on the Internet Computer**.
+Built with **React 19 + Vite 6 + TypeScript**, styled with inline CSS, tested with **Vitest**, and fully deployed **100% onchain on the Internet Computer**.
 
 ### Featured Projects
 
@@ -50,6 +50,11 @@ npm run build
 
 # Preview production build
 npm run preview
+
+# Lint, typecheck, and run tests
+npm run lint
+npm run typecheck
+npm run test
 ```
 
 ---
@@ -59,20 +64,25 @@ npm run preview
 ```
 fermartz.com/
 ├── index.html              # Entry HTML with full SEO metadata
-├── package.json            # Vite + React 19
-├── vite.config.js          # Vite config
+├── package.json            # Vite + React 19 + TypeScript
+├── tsconfig.json           # TypeScript config
+├── vite.config.ts          # Vite config (with Vitest)
+├── eslint.config.js        # Flat ESLint config
 ├── public/
 │   ├── favicon.ico         # Multi-size favicon (16/32/48)
-│   ├── favicon-16x16.png
-│   ├── favicon-32x32.png
-│   ├── apple-touch-icon.png
-│   ├── android-chrome-*.png
 │   ├── og-image.png        # Social sharing image (1200x630)
 │   ├── banner.png          # GitHub README banner
 │   └── site.webmanifest    # PWA manifest
 └── src/
-    ├── main.jsx            # React root
-    └── App.jsx             # Full site (single-file component)
+    ├── main.tsx            # React root
+    ├── App.tsx             # Site composition
+    ├── theme.ts            # Color + font constants
+    ├── types.ts            # Shared domain types
+    ├── components/         # Page sections + shared UI
+    │   └── music/          # Music player components
+    ├── contexts/           # AudioPlayerContext
+    ├── utils/              # Pure helpers (postLoader, audioHelpers, eqAnimation, ...)
+    └── posts/              # MDX blog posts
 ```
 
 ---
