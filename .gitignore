@@ -12,10 +12,15 @@ dist
 work
 dist-ssr
 *.local
+.env
+.env.*
 .dfx
 .claude
 CLAUDE.md
 marketing
+.mcp.json
+demo.gif
+demo.tape
 
 # Editor directories and files
 .vscode/*

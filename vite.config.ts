@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 import { nodePolyfills } from "vite-plugin-node-polyfills";
 import mdx from '@mdx-js/rollup'
@@ -28,4 +28,10 @@ export default defineConfig({
       protocolImports: true,
     }),
   ],
+  test: {
+    environment: 'jsdom',
+    globals: true,
+    include: ['src/**/*.test.{ts,tsx}'],
+    setupFiles: ['./src/test-setup.ts'],
+  },
 })

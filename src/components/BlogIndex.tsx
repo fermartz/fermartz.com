@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { HexGrid, globalStyles } from "../App.jsx";
+import { HexGrid, globalStyles } from "./Layout.tsx";
 import BlogNav from "./BlogNav.jsx";
 import {
   ACCENT_GREEN,
@@ -10,13 +10,7 @@ import {
   TEXT_MUTED,
   FONT_MONO,
 } from "../theme.js";
-
-const postModules = import.meta.glob("../posts/*.mdx", { eager: true });
-
-const posts = Object.values(postModules)
-  .map((mod) => mod.frontmatter)
-  .filter(Boolean)
-  .sort((a, b) => new Date(b.date + "T00:00:00") - new Date(a.date + "T00:00:00"));
+import { postsNewestFirst as posts } from "../utils/postLoader.ts";
 
 export default function BlogIndex() {
   return (

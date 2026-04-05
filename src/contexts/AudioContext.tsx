@@ -30,7 +30,8 @@ export function AudioPlayerProvider({ children }) {
     }
 
     if (!audioCtxRef.current) {
-      audioCtxRef.current = new (window.AudioContext || window.webkitAudioContext)();
+      const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+      audioCtxRef.current = new AudioCtx();
       const source = audioCtxRef.current.createMediaElementSource(audioRef.current);
       const analyser = audioCtxRef.current.createAnalyser();
       analyser.fftSize = 64;

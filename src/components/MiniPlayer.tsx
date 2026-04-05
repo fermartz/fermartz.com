@@ -58,7 +58,7 @@ function MiniEQ({ analyser, isPlaying }) {
       {[0, 1, 2].map((i) => (
         <div
           key={i}
-          ref={(el) => (barsRef.current[i] = el)}
+          ref={(el) => { barsRef.current[i] = el; }}
           style={{
             width: "2px",
             height: `${RESTING_HEIGHTS[i]}px`,
