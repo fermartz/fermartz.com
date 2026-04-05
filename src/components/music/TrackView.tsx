@@ -11,6 +11,7 @@ type TrackViewProps = {
   currentTime: number;
   analyser: any;
   volume: number;
+  playbackError: string | null;
   onBack: () => void;
   onSelectTrack: (t: any) => void;
   onPlayPause: () => void;
@@ -29,6 +30,7 @@ export function TrackView({
   currentTime,
   analyser,
   volume,
+  playbackError,
   onBack,
   onSelectTrack,
   onPlayPause,
@@ -54,6 +56,7 @@ export function TrackView({
         onSeek={onSeek}
         onVolumeChange={onVolumeChange}
         volume={volume}
+        playbackError={playbackError}
         isMobile={isMobile}
       />
 

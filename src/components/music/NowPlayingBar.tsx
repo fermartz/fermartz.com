@@ -1,10 +1,12 @@
 /**
- * NowPlayingBar — playback UI for the full music page. Handles three states:
+ * NowPlayingBar — playback UI for the full music page. Handles four states:
  *   1. No track loaded → shows idle prompt, disables transport controls
  *   2. Track loaded, paused → shows metadata + play button
  *   3. Track loaded, playing → shows metadata + animated EQ visualizer
+ *   4. Playback error → shows a visible error banner above the controls
+ *      (network failure, decode error, unsupported format, 404 on source)
  */
-import { ACCENT_PURPLE, TEXT_PRIMARY, TEXT_MUTED, FONT_MONO } from "../../theme.js";
+import { ACCENT_PINK, ACCENT_PURPLE, TEXT_PRIMARY, TEXT_MUTED, FONT_MONO } from "../../theme.js";
 import { EQVisualizer } from "./EQVisualizer.tsx";
 import { ControlButton } from "./ControlButton.tsx";
 
@@ -14,6 +16,7 @@ type NowPlayingBarProps = {
   duration: number;
   currentTime: number;
   analyser: any;
+  playbackError: string | null;
   onPlayPause: () => void;
   onPrev: () => void;
   onNext: () => void;
@@ -37,6 +40,7 @@ export function NowPlayingBar({
   duration,
   currentTime,
   analyser,
+  playbackError,
   onPlayPause,
   onPrev,
   onNext,
@@ -62,6 +66,25 @@ export function NowPlayingBar({
         marginBottom: "28px",
       }}
     >
+      {playbackError && (
+        <div
+          role="alert"
+          style={{
+            fontFamily: FONT_MONO,
+            fontSize: "11px",
+            letterSpacing: "1px",
+            color: ACCENT_PINK,
+            background: `${ACCENT_PINK}12`,
+            border: `1px solid ${ACCENT_PINK}40`,
+            borderRadius: "6px",
+            padding: "10px 12px",
+            marginBottom: "12px",
+          }}
+        >
+          ⚠ {playbackError}
+        </div>
+      )}
+
       <div style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "12px" }}>
         <EQVisualizer analyser={analyser} isPlaying={isPlaying} />
         <div style={{ flex: 1, minWidth: 0 }}>

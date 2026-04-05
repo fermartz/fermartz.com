@@ -19,6 +19,7 @@ export default function MusicPage() {
     duration,
     volume,
     analyserNode,
+    playbackError,
     playTrack,
     handlePlayPause,
     handlePrev,
@@ -102,6 +103,7 @@ export default function MusicPage() {
             currentTime={currentTime}
             analyser={analyserNode}
             volume={volume}
+            playbackError={playbackError}
             onBack={() => {
               setCurrentPlaylist(null);
             }}
