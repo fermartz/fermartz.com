@@ -1,21 +1,24 @@
 /**
  * NowPlayingBar — playback UI for the full music page. Handles four states:
- *   1. No track loaded → shows idle prompt, disables transport controls
- *   2. Track loaded, paused → shows metadata + play button
- *   3. Track loaded, playing → shows metadata + animated EQ visualizer
- *   4. Playback error → shows a visible error banner above the controls
- *      (network failure, decode error, unsupported format, 404 on source)
+ *   1. No track loaded   → idle prompt, transport controls disabled
+ *   2. Track paused      → metadata + play button
+ *   3. Track playing     → metadata + animated EQ visualizer
+ *   4. Playback error    → <ErrorBanner> rendered at the top of the bar
+ *                          (network failure, decode error, unsupported
+ *                          format, 404 on source) — sourced from
+ *                          AudioPlayerContext.playbackError
  */
 import { ACCENT_PINK, ACCENT_PURPLE, TEXT_PRIMARY, TEXT_MUTED, FONT_MONO } from "../../theme.js";
+import type { Track } from "../../types.ts";
 import { EQVisualizer } from "./EQVisualizer.tsx";
 import { ControlButton } from "./ControlButton.tsx";
 
 type NowPlayingBarProps = {
-  track: any;
+  track: Track | null;
   isPlaying: boolean;
   duration: number;
   currentTime: number;
-  analyser: any;
+  analyser: AnalyserNode | null;
   playbackError: string | null;
   onPlayPause: () => void;
   onPrev: () => void;
@@ -33,6 +36,31 @@ const formatTime = (secs: number): string => {
   const s = Math.floor(secs % 60);
   return `${m}:${s.toString().padStart(2, "0")}`;
 };
+
+// User-visible error banner. Rendered whenever the audio element rejects a
+// src or hits a network/decode/CORS failure. Uses role="alert" so screen
+// readers announce it and the pink accent so it's impossible to miss.
+function ErrorBanner({ message }: { message: string }) {
+  return (
+    <div
+      role="alert"
+      aria-live="assertive"
+      style={{
+        fontFamily: FONT_MONO,
+        fontSize: "11px",
+        letterSpacing: "1px",
+        color: ACCENT_PINK,
+        background: `${ACCENT_PINK}12`,
+        border: `1px solid ${ACCENT_PINK}40`,
+        borderRadius: "6px",
+        padding: "10px 12px",
+        marginBottom: "12px",
+      }}
+    >
+      ⚠ {message}
+    </div>
+  );
+}
 
 export function NowPlayingBar({
   track,
@@ -66,24 +94,7 @@ export function NowPlayingBar({
         marginBottom: "28px",
       }}
     >
-      {playbackError && (
-        <div
-          role="alert"
-          style={{
-            fontFamily: FONT_MONO,
-            fontSize: "11px",
-            letterSpacing: "1px",
-            color: ACCENT_PINK,
-            background: `${ACCENT_PINK}12`,
-            border: `1px solid ${ACCENT_PINK}40`,
-            borderRadius: "6px",
-            padding: "10px 12px",
-            marginBottom: "12px",
-          }}
-        >
-          ⚠ {playbackError}
-        </div>
-      )}
+      {playbackError && <ErrorBanner message={playbackError} />}
 
       <div style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "12px" }}>
         <EQVisualizer analyser={analyser} isPlaying={isPlaying} />

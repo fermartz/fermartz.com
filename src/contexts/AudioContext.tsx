@@ -3,14 +3,23 @@
  * the site-wide MiniPlayer. Wraps an HTMLAudioElement with Web Audio API
  * nodes (AnalyserNode) so visualizer components can read frequency data.
  *
- * Error handling: all playback failures (autoplay blocks, network issues,
- * CORS errors) are caught and logged via console.warn so the UI never hangs
- * on a rejected play() promise. Initialization failures are caught and
- * logged via console.error; the provider remains mounted so the user can
- * retry by interacting with a playback control.
+ * Error handling (two layers):
+ *
+ *   1. User-facing: every load/network/decode failure is mapped to a human
+ *      message via toPlaybackErrorMessage() and surfaced through the
+ *      `playbackError` field of the context value. NowPlayingBar renders
+ *      this as an <ErrorBanner role="alert"> above the transport controls.
+ *
+ *   2. Developer-facing: all errors are ALSO logged via console.warn /
+ *      console.error with a "[audio]" prefix for production debugging.
+ *
+ * Input validation: playTrack() and selectPlaylist() both validate their
+ * arguments before touching any audio state, so malformed music.json
+ * entries fail fast with a warning instead of propagating undefined.
  */
 import { createContext, useContext, useState, useRef, useEffect, useCallback } from "react";
 import musicData from "../data/music.json";
+import type { Playlist, Track } from "../types.ts";
 
 // Configurable via VITE_MUSIC_S3_BASE; defaults to the public assets bucket
 // for the site. This is a read-only CDN origin — no credentials are stored
@@ -19,14 +28,48 @@ const S3_BASE =
   (import.meta.env.VITE_MUSIC_S3_BASE as string | undefined) ||
   "https://fermartz-site-music.s3.amazonaws.com";
 
+// Translate a MediaError code into a message the user can act on. Returned
+// by the <audio> 'error' event listener and stored in playbackError state,
+// which NowPlayingBar reads and renders as a visible banner.
+const toPlaybackErrorMessage = (error: MediaError | null | undefined): string => {
+  if (!error) return "Playback failed. Try another track.";
+  switch (error.code) {
+    case MediaError.MEDIA_ERR_NETWORK:
+      return "Network error — check your connection.";
+    case MediaError.MEDIA_ERR_DECODE:
+      return "This track couldn't be decoded.";
+    case MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED:
+      return "Track not found or unsupported format.";
+    default:
+      return "Playback failed. Try another track.";
+  }
+};
+
 // Safely start playback. Browsers reject play() if autoplay policy blocks it,
 // if the network fails, or if CORS headers are missing — log and swallow so
-// the caller's state machine can continue.
+// the caller's state machine can continue. Surface-level errors from the
+// element itself are handled separately by the 'error' event listener below,
+// which populates playbackError for the UI.
 const safePlay = (audio: HTMLAudioElement | null, label: string) => {
   if (!audio) return Promise.resolve();
   return audio.play().catch((err) => {
     console.warn(`[audio] ${label} failed:`, err);
   });
+};
+
+// Validate a Track shape before any audio side effects. Returns true if
+// the object is safe to hand to playTrack.
+const isValidTrack = (track: unknown): track is Track => {
+  if (!track || typeof track !== "object") return false;
+  const t = track as Partial<Track>;
+  return typeof t.url === "string" && typeof t.id === "string";
+};
+
+// Validate a Playlist shape. Null is accepted to support "return to grid".
+const isValidPlaylist = (playlist: unknown): playlist is Playlist => {
+  if (!playlist || typeof playlist !== "object") return false;
+  const p = playlist as Partial<Playlist>;
+  return Array.isArray(p.tracks) && p.tracks.length > 0;
 };
 
 const AudioPlayerContext = createContext(null);
@@ -129,16 +172,8 @@ export function AudioPlayerProvider({ children }) {
     // this event whenever the <audio> element can't play the current src —
     // 404, CORS rejection, unsupported codec, network drop, etc.
     const handleError = () => {
-      const code = audio.error?.code;
-      const message =
-        code === MediaError.MEDIA_ERR_NETWORK
-          ? "Network error — check your connection."
-          : code === MediaError.MEDIA_ERR_DECODE
-          ? "This track couldn't be decoded."
-          : code === MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED
-          ? "Track not found or unsupported format."
-          : "Playback failed. Try another track.";
-      console.warn("[audio] element error:", code, audio.error?.message);
+      const message = toPlaybackErrorMessage(audio.error);
+      console.warn("[audio] element error:", audio.error?.code, audio.error?.message);
       setPlaybackError(message);
       setIsPlaying(false);
     };
@@ -190,10 +225,10 @@ export function AudioPlayerProvider({ children }) {
   }, []);
 
   const playTrack = useCallback(
-    (track) => {
+    (track: unknown) => {
       // Validate track shape before any side effects — prevents crashes from
       // malformed music.json entries or accidental null/undefined propagation.
-      if (!track || typeof track.url !== "string" || !track.id) {
+      if (!isValidTrack(track)) {
         console.warn("[audio] playTrack called with invalid track:", track);
         return;
       }
@@ -231,21 +266,14 @@ export function AudioPlayerProvider({ children }) {
     [currentTrack, isPlaying, initAudio]
   );
 
-  // Validated playlist setter — rejects malformed input (null is allowed,
-  // used to return to the playlist grid). Any external caller that passes a
-  // non-conforming object is logged and ignored rather than propagating
-  // undefined field accesses into the playback machinery.
-  const selectPlaylist = useCallback((playlist: any) => {
+  // Validated playlist setter — null is allowed (used to return to the
+  // playlist grid). Any other non-conforming input is logged and ignored.
+  const selectPlaylist = useCallback((playlist: unknown) => {
     if (playlist === null) {
       setCurrentPlaylist(null);
       return;
     }
-    if (
-      !playlist ||
-      typeof playlist !== "object" ||
-      !Array.isArray(playlist.tracks) ||
-      playlist.tracks.length === 0
-    ) {
+    if (!isValidPlaylist(playlist)) {
       console.warn("[audio] selectPlaylist rejected invalid playlist:", playlist);
       return;
     }
