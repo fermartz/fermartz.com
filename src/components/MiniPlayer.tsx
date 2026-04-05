@@ -14,19 +14,30 @@ import {
   FONT_MONO,
 } from "../theme.js";
 import "./MiniPlayer.css";
+import {
+  createFrequencyBuffer,
+  resetBarHeights,
+  updateBarHeights,
+} from "../utils/eqAnimation.ts";
 
 const RESTING_HEIGHTS = [5, 10, 7];
 const BAR_COUNT = 3;
+const MAX_HEIGHT = 16;
+const MIN_HEIGHT = 3;
 
-function MiniEQ({ analyser, isPlaying }) {
+function MiniEQ({
+  analyser,
+  isPlaying,
+}: {
+  analyser: AnalyserNode | null;
+  isPlaying: boolean;
+}) {
   const barsRef = useRef<(HTMLDivElement | null)[]>([null, null, null]);
   const animRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (!isPlaying || !analyser) {
-      barsRef.current.forEach((bar, i) => {
-        if (bar) bar.style.height = `${RESTING_HEIGHTS[i]}px`;
-      });
+      resetBarHeights(barsRef.current, RESTING_HEIGHTS);
       if (animRef.current) {
         cancelAnimationFrame(animRef.current);
         animRef.current = null;
@@ -34,32 +45,18 @@ function MiniEQ({ analyser, isPlaying }) {
       return;
     }
 
-    // Validate analyser state before allocating. frequencyBinCount can be 0
-    // on some browsers if the AudioContext was torn down mid-render.
-    const binCount = analyser.frequencyBinCount;
-    if (!Number.isFinite(binCount) || binCount <= 0) {
+    const dataArray = createFrequencyBuffer(analyser);
+    if (!dataArray) {
       console.warn("[mini-eq] analyser has no frequency bins, skipping animation");
       return;
     }
 
-    const dataArray = new Uint8Array(binCount);
-    const step = Math.max(1, Math.floor(binCount / BAR_COUNT));
+    const tick = () => {
+      updateBarHeights(analyser, dataArray, barsRef.current, MAX_HEIGHT, MIN_HEIGHT);
+      animRef.current = requestAnimationFrame(tick);
+    };
 
-    function animate() {
-      analyser.getByteFrequencyData(dataArray);
-      if (dataArray.length === 0) return;
-      for (let i = 0; i < BAR_COUNT; i++) {
-        const val = dataArray[i * step] || 0;
-        const height = Math.max(3, Math.min(16, (val / 255) * 16));
-        const bar = barsRef.current[i];
-        if (bar) {
-          bar.style.height = `${height}px`;
-        }
-      }
-      animRef.current = requestAnimationFrame(animate);
-    }
-
-    animate();
+    tick();
 
     return () => {
       if (animRef.current) {

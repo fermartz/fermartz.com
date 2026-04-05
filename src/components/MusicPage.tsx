@@ -20,6 +20,8 @@ export default function MusicPage() {
     volume,
     analyserNode,
     playbackError,
+    retryPlayback,
+    dismissError,
     playTrack,
     handlePlayPause,
     handlePrev,
@@ -104,6 +106,8 @@ export default function MusicPage() {
             analyser={analyserNode}
             volume={volume}
             playbackError={playbackError}
+            onRetryPlayback={retryPlayback}
+            onDismissError={dismissError}
             onBack={() => {
               setCurrentPlaylist(null);
             }}

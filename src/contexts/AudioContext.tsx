@@ -3,23 +3,21 @@
  * the site-wide MiniPlayer. Wraps an HTMLAudioElement with Web Audio API
  * nodes (AnalyserNode) so visualizer components can read frequency data.
  *
- * Error handling (two layers):
- *
- *   1. User-facing: every load/network/decode failure is mapped to a human
- *      message via toPlaybackErrorMessage() and surfaced through the
- *      `playbackError` field of the context value. NowPlayingBar renders
- *      this as an <ErrorBanner role="alert"> above the transport controls.
- *
- *   2. Developer-facing: all errors are ALSO logged via console.warn /
- *      console.error with a "[audio]" prefix for production debugging.
- *
- * Input validation: playTrack() and selectPlaylist() both validate their
- * arguments before touching any audio state, so malformed music.json
- * entries fail fast with a warning instead of propagating undefined.
+ * Error handling is two-layer: user-facing messages are surfaced through
+ * `playbackError` + `retryPlayback` + `dismissError` on the context value
+ * (rendered as ErrorBanner with recovery actions in NowPlayingBar), and
+ * developer-facing logs are sent to console.warn/error with a "[audio]"
+ * prefix. Pure helpers (validation, error mapping, safePlay) live in
+ * utils/audioHelpers.ts and are individually unit-testable.
  */
 import { createContext, useContext, useState, useRef, useEffect, useCallback } from "react";
 import musicData from "../data/music.json";
-import type { Playlist, Track } from "../types.ts";
+import {
+  isValidPlaylist,
+  isValidTrack,
+  safePlay,
+  toPlaybackErrorMessage,
+} from "../utils/audioHelpers.ts";
 
 // Configurable via VITE_MUSIC_S3_BASE; defaults to the public assets bucket
 // for the site. This is a read-only CDN origin — no credentials are stored
@@ -27,50 +25,6 @@ import type { Playlist, Track } from "../types.ts";
 const S3_BASE =
   (import.meta.env.VITE_MUSIC_S3_BASE as string | undefined) ||
   "https://fermartz-site-music.s3.amazonaws.com";
-
-// Translate a MediaError code into a message the user can act on. Returned
-// by the <audio> 'error' event listener and stored in playbackError state,
-// which NowPlayingBar reads and renders as a visible banner.
-const toPlaybackErrorMessage = (error: MediaError | null | undefined): string => {
-  if (!error) return "Playback failed. Try another track.";
-  switch (error.code) {
-    case MediaError.MEDIA_ERR_NETWORK:
-      return "Network error — check your connection.";
-    case MediaError.MEDIA_ERR_DECODE:
-      return "This track couldn't be decoded.";
-    case MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED:
-      return "Track not found or unsupported format.";
-    default:
-      return "Playback failed. Try another track.";
-  }
-};
-
-// Safely start playback. Browsers reject play() if autoplay policy blocks it,
-// if the network fails, or if CORS headers are missing — log and swallow so
-// the caller's state machine can continue. Surface-level errors from the
-// element itself are handled separately by the 'error' event listener below,
-// which populates playbackError for the UI.
-const safePlay = (audio: HTMLAudioElement | null, label: string) => {
-  if (!audio) return Promise.resolve();
-  return audio.play().catch((err) => {
-    console.warn(`[audio] ${label} failed:`, err);
-  });
-};
-
-// Validate a Track shape before any audio side effects. Returns true if
-// the object is safe to hand to playTrack.
-const isValidTrack = (track: unknown): track is Track => {
-  if (!track || typeof track !== "object") return false;
-  const t = track as Partial<Track>;
-  return typeof t.url === "string" && typeof t.id === "string";
-};
-
-// Validate a Playlist shape. Null is accepted to support "return to grid".
-const isValidPlaylist = (playlist: unknown): playlist is Playlist => {
-  if (!playlist || typeof playlist !== "object") return false;
-  const p = playlist as Partial<Playlist>;
-  return Array.isArray(p.tracks) && p.tracks.length > 0;
-};
 
 const AudioPlayerContext = createContext(null);
 
@@ -90,13 +44,10 @@ export function AudioPlayerProvider({ children }) {
 
   const audioRef = useRef(null);
   const audioCtxRef = useRef(null);
-  const analyserRef = useRef(null);
-  const sourceRef = useRef(null);
 
-  // Initialize audio elements and Web Audio API. All construction is wrapped
-  // in try/catch: Web Audio API can throw if unavailable (older browsers, WebView
-  // quirks, or autoplay-restricted iframes). A failure here must not crash the
-  // provider — the user should still see the UI, just without visualizer data.
+  // Lazily construct the <audio> element and Web Audio graph. Wrapped in
+  // try/catch so browsers without Web Audio (older Safari, locked iframes)
+  // still get a working UI, minus the visualizer.
   const initAudio = useCallback(() => {
     try {
       if (!audioRef.current) {
@@ -104,7 +55,6 @@ export function AudioPlayerProvider({ children }) {
         audioRef.current.crossOrigin = "anonymous";
         audioRef.current.volume = volume;
       }
-
       if (!audioCtxRef.current) {
         const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
         if (!AudioCtx) {
@@ -117,15 +67,10 @@ export function AudioPlayerProvider({ children }) {
         analyser.fftSize = 64;
         source.connect(analyser);
         analyser.connect(audioCtxRef.current.destination);
-        sourceRef.current = source;
-        analyserRef.current = analyser;
         setAnalyserNode(analyser);
       }
-
       if (audioCtxRef.current.state === "suspended") {
-        audioCtxRef.current.resume().catch((err) => {
-          console.warn("[audio] resume failed:", err);
-        });
+        audioCtxRef.current.resume().catch((err) => console.warn("[audio] resume failed:", err));
       }
     } catch (err) {
       console.error("[audio] initialization failed:", err);
@@ -139,69 +84,45 @@ export function AudioPlayerProvider({ children }) {
 
     const handleTimeUpdate = () => {
       setCurrentTime(audio.currentTime);
-      if (audio.duration) {
-        setProgress((audio.currentTime / audio.duration) * 100);
-      }
+      if (audio.duration) setProgress((audio.currentTime / audio.duration) * 100);
     };
+    const handleLoadedMetadata = () => setDuration(audio.duration);
 
-    const handleLoadedMetadata = () => {
-      setDuration(audio.duration);
-    };
-
+    // Auto-advance to the next track. playTrack isn't called directly to
+    // avoid a stale closure — we replicate its core logic inline.
     const handleEnded = () => {
-      if (currentPlaylist && currentTrack) {
-        const tracks = currentPlaylist.tracks;
-        const idx = tracks.findIndex((t) => t.id === currentTrack.id);
-        const nextIdx = (idx + 1) % tracks.length;
-        // Can't call playTrack directly due to stale closure, so inline the logic
-        const nextTrack = tracks[nextIdx];
-        audio.src = `${S3_BASE}${nextTrack.url}`;
-        audio.load();
-        setCurrentTrack(nextTrack);
-        setCurrentTime(0);
-        setDuration(0);
-        setProgress(0);
-        setPlaybackError(null);
-        safePlay(audio, "auto-advance").then(() => {
-          setIsPlaying(true);
-        });
-      }
+      if (!currentPlaylist || !currentTrack) return;
+      const tracks = currentPlaylist.tracks;
+      const nextTrack = tracks[(tracks.findIndex((t) => t.id === currentTrack.id) + 1) % tracks.length];
+      audio.src = `${S3_BASE}${nextTrack.url}`;
+      audio.load();
+      setCurrentTrack(nextTrack);
+      setCurrentTime(0);
+      setDuration(0);
+      setProgress(0);
+      setPlaybackError(null);
+      safePlay(audio, "auto-advance").then(() => setIsPlaying(true));
     };
 
-    // Surface load / decode / network errors to the UI. The browser fires
-    // this event whenever the <audio> element can't play the current src —
-    // 404, CORS rejection, unsupported codec, network drop, etc.
+    // Surface element-level errors (404, CORS, decode, network) to the UI.
     const handleError = () => {
-      const message = toPlaybackErrorMessage(audio.error);
       console.warn("[audio] element error:", audio.error?.code, audio.error?.message);
-      setPlaybackError(message);
+      setPlaybackError(toPlaybackErrorMessage(audio.error));
       setIsPlaying(false);
     };
+    const handleStalled = () => console.warn("[audio] playback stalled (network)");
+    const handleCanPlay = () => setPlaybackError(null);
 
-    const handleStalled = () => {
-      console.warn("[audio] playback stalled (network)");
-    };
-
-    const handleCanPlay = () => {
-      // Clear stale error once the browser reports the src is playable.
-      setPlaybackError(null);
-    };
-
-    audio.addEventListener("timeupdate", handleTimeUpdate);
-    audio.addEventListener("loadedmetadata", handleLoadedMetadata);
-    audio.addEventListener("ended", handleEnded);
-    audio.addEventListener("error", handleError);
-    audio.addEventListener("stalled", handleStalled);
-    audio.addEventListener("canplay", handleCanPlay);
-
-    return () => {
-      audio.removeEventListener("timeupdate", handleTimeUpdate);
-      audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
-      audio.removeEventListener("ended", handleEnded);
-      audio.removeEventListener("error", handleError);
-      audio.removeEventListener("stalled", handleStalled);
-      audio.removeEventListener("canplay", handleCanPlay);
-    };
+    const listeners: [keyof HTMLMediaElementEventMap, EventListener][] = [
+      ["timeupdate", handleTimeUpdate],
+      ["loadedmetadata", handleLoadedMetadata],
+      ["ended", handleEnded],
+      ["error", handleError],
+      ["stalled", handleStalled],
+      ["canplay", handleCanPlay],
+    ];
+    listeners.forEach(([name, fn]) => audio.addEventListener(name, fn));
+    return () => listeners.forEach(([name, fn]) => audio.removeEventListener(name, fn));
   }, [currentPlaylist, currentTrack]);
 
   // Volume sync
@@ -211,18 +132,17 @@ export function AudioPlayerProvider({ children }) {
     }
   }, [volume]);
 
-  // Cleanup on provider unmount (app close)
-  useEffect(() => {
-    return () => {
+  // Cleanup on provider unmount (app close).
+  useEffect(
+    () => () => {
       if (audioRef.current) {
         audioRef.current.pause();
         audioRef.current.src = "";
       }
-      if (audioCtxRef.current) {
-        audioCtxRef.current.close();
-      }
-    };
-  }, []);
+      if (audioCtxRef.current) audioCtxRef.current.close();
+    },
+    []
+  );
 
   const playTrack = useCallback(
     (track: unknown) => {
@@ -266,6 +186,19 @@ export function AudioPlayerProvider({ children }) {
     [currentTrack, isPlaying, initAudio]
   );
 
+  // Dismiss the ErrorBanner without touching playback state.
+  const dismissError = useCallback(() => setPlaybackError(null), []);
+
+  // Retry the current track after a playback error. Reloads the src (clears
+  // MediaError state) and attempts play() again. No-op if nothing is loaded.
+  const retryPlayback = useCallback(() => {
+    setPlaybackError(null);
+    const audio = audioRef.current;
+    if (!audio || !currentTrack) return;
+    audio.load();
+    safePlay(audio, "retry").then(() => setIsPlaying(true));
+  }, [currentTrack]);
+
   // Validated playlist setter — null is allowed (used to return to the
   // playlist grid). Any other non-conforming input is logged and ignored.
   const selectPlaylist = useCallback((playlist: unknown) => {
@@ -297,43 +230,31 @@ export function AudioPlayerProvider({ children }) {
     }
   }, [isPlaying, currentTrack, currentPlaylist, initAudio, playTrack]);
 
-  const handlePrev = useCallback(() => {
-    if (!currentPlaylist || !currentTrack) return;
-    const tracks = currentPlaylist.tracks;
-    const idx = tracks.findIndex((t) => t.id === currentTrack.id);
-    const prevIdx = idx <= 0 ? tracks.length - 1 : idx - 1;
-    playTrack(tracks[prevIdx]);
-    setTimeout(() => {
-      if (audioRef.current) {
-        safePlay(audioRef.current, "control");
-        setIsPlaying(true);
-      }
-    }, 100);
-  }, [currentPlaylist, currentTrack, playTrack]);
+  // Step forward or backward through the current playlist with wraparound.
+  const navigate = useCallback(
+    (delta: 1 | -1) => {
+      if (!currentPlaylist || !currentTrack) return;
+      const tracks = currentPlaylist.tracks;
+      const idx = tracks.findIndex((t) => t.id === currentTrack.id);
+      const nextIdx = (idx + delta + tracks.length) % tracks.length;
+      playTrack(tracks[nextIdx]);
+      setTimeout(() => {
+        safePlay(audioRef.current, "control").then(() => setIsPlaying(true));
+      }, 100);
+    },
+    [currentPlaylist, currentTrack, playTrack]
+  );
 
-  const handleNext = useCallback(() => {
-    if (!currentPlaylist || !currentTrack) return;
-    const tracks = currentPlaylist.tracks;
-    const idx = tracks.findIndex((t) => t.id === currentTrack.id);
-    const nextIdx = (idx + 1) % tracks.length;
-    playTrack(tracks[nextIdx]);
-    setTimeout(() => {
-      if (audioRef.current) {
-        safePlay(audioRef.current, "control");
-        setIsPlaying(true);
-      }
-    }, 100);
-  }, [currentPlaylist, currentTrack, playTrack]);
+  const handlePrev = useCallback(() => navigate(-1), [navigate]);
+  const handleNext = useCallback(() => navigate(1), [navigate]);
 
-  const handleSeek = useCallback((time) => {
+  const handleSeek = useCallback((time: number) => {
     if (!audioRef.current) return;
     audioRef.current.currentTime = time;
     setCurrentTime(time);
   }, []);
 
-  const handleVolumeChange = useCallback((val) => {
-    setVolume(val);
-  }, []);
+  const handleVolumeChange = useCallback((val: number) => setVolume(val), []);
 
   const value = {
     currentPlaylist,
@@ -347,6 +268,8 @@ export function AudioPlayerProvider({ children }) {
     analyserNode,
     hasEverPlayed,
     playbackError,
+    retryPlayback,
+    dismissError,
     playTrack,
     handlePlayPause,
     handlePrev,

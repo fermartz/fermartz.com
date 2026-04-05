@@ -12,6 +12,8 @@ type TrackViewProps = {
   analyser: any;
   volume: number;
   playbackError: string | null;
+  onRetryPlayback: () => void;
+  onDismissError: () => void;
   onBack: () => void;
   onSelectTrack: (t: any) => void;
   onPlayPause: () => void;
@@ -31,6 +33,8 @@ export function TrackView({
   analyser,
   volume,
   playbackError,
+  onRetryPlayback,
+  onDismissError,
   onBack,
   onSelectTrack,
   onPlayPause,
@@ -57,6 +61,8 @@ export function TrackView({
         onVolumeChange={onVolumeChange}
         volume={volume}
         playbackError={playbackError}
+        onRetryPlayback={onRetryPlayback}
+        onDismissError={onDismissError}
         isMobile={isMobile}
       />
 

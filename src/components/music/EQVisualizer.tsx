@@ -1,16 +1,25 @@
 import { useRef, useEffect } from "react";
 import { ACCENT_PURPLE } from "../../theme.js";
 import { RESTING_HEIGHTS } from "../../utils/musicHelpers.ts";
+import { createFrequencyBuffer, resetBarHeights, updateBarHeights } from "../../utils/eqAnimation.ts";
 
-export function EQVisualizer({ analyser, isPlaying }: { analyser: any; isPlaying: boolean }) {
+const BAR_COUNT = 5;
+const MAX_HEIGHT = 28;
+const MIN_HEIGHT = 4;
+
+export function EQVisualizer({
+  analyser,
+  isPlaying,
+}: {
+  analyser: AnalyserNode | null;
+  isPlaying: boolean;
+}) {
   const barsRef = useRef<(HTMLDivElement | null)[]>([null, null, null, null, null]);
   const animRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (!isPlaying || !analyser) {
-      barsRef.current.forEach((bar, i) => {
-        if (bar) bar.style.height = `${RESTING_HEIGHTS[i]}px`;
-      });
+      resetBarHeights(barsRef.current, RESTING_HEIGHTS);
       if (animRef.current) {
         cancelAnimationFrame(animRef.current);
         animRef.current = null;
@@ -18,24 +27,15 @@ export function EQVisualizer({ analyser, isPlaying }: { analyser: any; isPlaying
       return;
     }
 
-    const dataArray = new Uint8Array(analyser.frequencyBinCount);
+    const dataArray = createFrequencyBuffer(analyser);
+    if (!dataArray) return;
 
-    function animate() {
-      analyser.getByteFrequencyData(dataArray);
-      const binCount = dataArray.length;
-      const step = Math.floor(binCount / 5);
-      for (let i = 0; i < 5; i++) {
-        const val = dataArray[i * step] || 0;
-        const height = Math.max(4, Math.min(28, (val / 255) * 28));
-        const bar = barsRef.current[i];
-        if (bar) {
-          bar.style.height = `${height}px`;
-        }
-      }
-      animRef.current = requestAnimationFrame(animate);
-    }
+    const tick = () => {
+      updateBarHeights(analyser, dataArray, barsRef.current, MAX_HEIGHT, MIN_HEIGHT);
+      animRef.current = requestAnimationFrame(tick);
+    };
 
-    animate();
+    tick();
 
     return () => {
       if (animRef.current) {
@@ -47,10 +47,12 @@ export function EQVisualizer({ analyser, isPlaying }: { analyser: any; isPlaying
 
   return (
     <div style={{ display: "flex", alignItems: "flex-end", gap: "2px", height: "28px" }}>
-      {[0, 1, 2, 3, 4].map((i) => (
+      {Array.from({ length: BAR_COUNT }, (_, i) => (
         <div
           key={i}
-          ref={(el) => { barsRef.current[i] = el; }}
+          ref={(el) => {
+            barsRef.current[i] = el;
+          }}
           style={{
             width: "3px",
             height: `${RESTING_HEIGHTS[i]}px`,
