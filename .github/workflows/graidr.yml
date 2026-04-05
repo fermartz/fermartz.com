@@ -30,4 +30,4 @@ jobs:
           GITHUB_SHA: ${{ github.sha }}
           GITHUB_REF_NAME: ${{ github.ref_name }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
-        run: node .github/workflows/graidr-scorer.js
+        run: node .github/workflows/graidr-scorer.cjs
