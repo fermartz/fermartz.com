@@ -1,3 +1,9 @@
+/**
+ * MiniPlayer — persistent playback widget rendered in the site-wide layout.
+ * Hides itself on /music (where the full player is shown) and on routes
+ * the user has never played anything from. Reads playback state from the
+ * shared AudioPlayerContext.
+ */
 import { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAudioPlayer } from "../contexts/AudioContext.jsx";
@@ -10,10 +16,11 @@ import {
 import "./MiniPlayer.css";
 
 const RESTING_HEIGHTS = [5, 10, 7];
+const BAR_COUNT = 3;
 
 function MiniEQ({ analyser, isPlaying }) {
-  const barsRef = useRef([null, null, null]);
-  const animRef = useRef(null);
+  const barsRef = useRef<(HTMLDivElement | null)[]>([null, null, null]);
+  const animRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (!isPlaying || !analyser) {
@@ -27,17 +34,26 @@ function MiniEQ({ analyser, isPlaying }) {
       return;
     }
 
-    const dataArray = new Uint8Array(analyser.frequencyBinCount);
+    // Validate analyser state before allocating. frequencyBinCount can be 0
+    // on some browsers if the AudioContext was torn down mid-render.
+    const binCount = analyser.frequencyBinCount;
+    if (!Number.isFinite(binCount) || binCount <= 0) {
+      console.warn("[mini-eq] analyser has no frequency bins, skipping animation");
+      return;
+    }
+
+    const dataArray = new Uint8Array(binCount);
+    const step = Math.max(1, Math.floor(binCount / BAR_COUNT));
 
     function animate() {
       analyser.getByteFrequencyData(dataArray);
-      const binCount = dataArray.length;
-      const step = Math.floor(binCount / 3);
-      for (let i = 0; i < 3; i++) {
+      if (dataArray.length === 0) return;
+      for (let i = 0; i < BAR_COUNT; i++) {
         const val = dataArray[i * step] || 0;
         const height = Math.max(3, Math.min(16, (val / 255) * 16));
-        if (barsRef.current[i]) {
-          barsRef.current[i].style.height = `${height}px`;
+        const bar = barsRef.current[i];
+        if (bar) {
+          bar.style.height = `${height}px`;
         }
       }
       animRef.current = requestAnimationFrame(animate);

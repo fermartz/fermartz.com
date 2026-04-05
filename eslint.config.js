@@ -12,6 +12,8 @@ export default [
       'work/**',
       'marketing/**',
       'src/posts/**',
+      '.github/**',
+      '**/*.cjs',
     ],
   },
   js.configs.recommended,

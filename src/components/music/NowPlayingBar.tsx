@@ -1,3 +1,9 @@
+/**
+ * NowPlayingBar — playback UI for the full music page. Handles three states:
+ *   1. No track loaded → shows idle prompt, disables transport controls
+ *   2. Track loaded, paused → shows metadata + play button
+ *   3. Track loaded, playing → shows metadata + animated EQ visualizer
+ */
 import { ACCENT_PURPLE, TEXT_PRIMARY, TEXT_MUTED, FONT_MONO } from "../../theme.js";
 import { EQVisualizer } from "./EQVisualizer.tsx";
 import { ControlButton } from "./ControlButton.tsx";
@@ -17,6 +23,14 @@ type NowPlayingBarProps = {
   isMobile: boolean;
 };
 
+// Guard against NaN/undefined durations from HTMLAudioElement during load.
+const formatTime = (secs: number): string => {
+  if (!Number.isFinite(secs) || secs < 0) return "0:00";
+  const m = Math.floor(secs / 60);
+  const s = Math.floor(secs % 60);
+  return `${m}:${s.toString().padStart(2, "0")}`;
+};
+
 export function NowPlayingBar({
   track,
   isPlaying,
@@ -31,14 +45,12 @@ export function NowPlayingBar({
   volume,
   isMobile,
 }: NowPlayingBarProps) {
-  const formatTime = (secs: number) => {
-    if (!secs || isNaN(secs)) return "0:00";
-    const m = Math.floor(secs / 60);
-    const s = Math.floor(secs % 60);
-    return `${m}:${s.toString().padStart(2, "0")}`;
-  };
-
-  const progressPercent = duration > 0 ? (currentTime / duration) * 100 : 0;
+  // Empty state: no track selected. Render a minimal idle prompt so the user
+  // always gets visual feedback (rather than a broken-looking transport bar).
+  const hasTrack = track && typeof track === "object" && track.name;
+  const safeDuration = Number.isFinite(duration) && duration > 0 ? duration : 0;
+  const safeCurrentTime = Number.isFinite(currentTime) && currentTime >= 0 ? currentTime : 0;
+  const progressPercent = safeDuration > 0 ? (safeCurrentTime / safeDuration) * 100 : 0;
 
   return (
     <div
@@ -63,7 +75,7 @@ export function NowPlayingBar({
               textOverflow: "ellipsis",
             }}
           >
-            {track ? track.name : "Hit play. Start vibing."}
+            {hasTrack ? track.name : "Hit play. Start vibing."}
           </div>
           <div
             style={{
@@ -75,7 +87,7 @@ export function NowPlayingBar({
               marginTop: "2px",
             }}
           >
-            {track ? `${track.style} · ${track.duration}` : ""}
+            {hasTrack ? `${track.style} · ${track.duration}` : ""}
           </div>
         </div>
         <div
@@ -87,7 +99,7 @@ export function NowPlayingBar({
             whiteSpace: "nowrap",
           }}
         >
-          {formatTime(currentTime)} / {formatTime(duration)}
+          {formatTime(safeCurrentTime)} / {formatTime(safeDuration)}
         </div>
       </div>
 
@@ -119,8 +131,8 @@ export function NowPlayingBar({
           type="range"
           className="music-progress"
           min="0"
-          max={duration || 0}
-          value={currentTime || 0}
+          max={safeDuration}
+          value={safeCurrentTime}
           onChange={(e) => onSeek(parseFloat(e.target.value))}
           style={{
             position: "absolute",
