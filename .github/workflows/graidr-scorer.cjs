@@ -16,6 +16,7 @@ const path = require('path')
 
 // ── endpoints ─────────────────────────────────────────────────
 
+// Public Supabase Edge Function endpoint — not a secret, no credentials embedded
 const SUBMIT_SCORE_URL = 'https://kyfbjdzfizzfpdjqdpyz.supabase.co/functions/v1/submit-score'
 const GITHUB_MODELS_ENDPOINT = 'https://models.inference.ai.azure.com/chat/completions'
 const MODEL_ID = 'gpt-4o'
@@ -39,8 +40,14 @@ function req(url, opts, body) {
 }
 
 function sh(cmd) {
-  try { return execSync(cmd, { encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'] }).trim() }
-  catch { return '' }
+  try {
+    return execSync(cmd, { encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'] }).trim()
+  } catch (err) {
+    // Non-zero exit is expected for grep/find "not found" results — return empty string.
+    // Re-throw only on signals (e.g. SIGKILL) which indicate a real system failure.
+    if (err.signal) throw err
+    return ''
+  }
 }
 
 function shCount(cmd) {
@@ -87,7 +94,7 @@ function collectFacts() {
     facts.env_in_gitignore = /\.env/.test(gi)
   }
   facts.env_files_committed = shCount("git ls-files -- '.env*' | wc -l") > 0
-  facts.potential_secrets = shCount("git ls-files -- '*.ts' '*.tsx' '*.js' '*.jsx' '*.json' | xargs grep -Eil '(sk-|sk_live|AKIA|password\\s*=\\s*\"|api_key\\s*=\\s*\")' 2>/dev/null | wc -l")
+  facts.potential_secrets = shCount("git ls-files -- '*.ts' '*.tsx' '*.js' '*.jsx' '*.json' | grep -Ev '(^|/)(package-lock\\.json|yarn\\.lock|pnpm-lock\\.yaml|npm-shrinkwrap\\.json)$' | xargs grep -Eil '(\\bsk-[a-zA-Z0-9]{20,}|\\bsk_live_[a-zA-Z0-9]+|\\bAKIA[0-9A-Z]{16}\\b|\\bpassword\\s*=\\s*\"[^\"]+\"|\\bapi_key\\s*=\\s*\"[^\"]+\")' 2>/dev/null | wc -l")
   facts.eval_usage = shCount("git ls-files -- '*.ts' '*.tsx' '*.js' '*.jsx' | xargs grep -l 'eval(' 2>/dev/null | wc -l") > 0
 
   // Completeness facts
@@ -389,7 +396,9 @@ async function postPRComment(score, ratedWith) {
 
   const overall = Math.round((score.structure_score + score.safety_score + score.completeness_score) / 3)
   const grade = gradeLabel(overall)
-  const [owner, name] = process.env.GITHUB_REPOSITORY.split('/')
+  const repo = process.env.GITHUB_REPOSITORY || ''
+  if (!repo.includes('/')) return
+  const [owner, name] = repo.split('/')
 
   const issuesList = (score.top_issues || []).map(i => `- ${i}`).join('\n')
   const wellList = (score.doing_well || []).map(i => `- ${i}`).join('\n')
@@ -487,3 +496,4 @@ main().catch(err => {
   console.error('graidr: non-fatal error —', err.message ?? err)
   process.exit(0) // never fail the pipeline
 })
+
