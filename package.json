@@ -39,6 +39,7 @@
     "typescript": "^6.0.2",
     "vite": "^6.3.5",
     "vite-plugin-node-polyfills": "^0.25.0",
+    "vite-plugin-pwa": "^1.2.0",
     "vitest": "^4.1.2"
   }
 }
