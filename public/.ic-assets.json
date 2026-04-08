@@ -6,5 +6,26 @@
   {
     "match": "**",
     "enable_aliasing": true
+  },
+  {
+    "match": "sw.js",
+    "headers": {
+      "Cache-Control": "no-cache",
+      "Content-Type": "application/javascript"
+    }
+  },
+  {
+    "match": "workbox-*.js",
+    "headers": {
+      "Cache-Control": "max-age=31536000, immutable",
+      "Content-Type": "application/javascript"
+    }
+  },
+  {
+    "match": "manifest.webmanifest",
+    "headers": {
+      "Content-Type": "application/manifest+json",
+      "Cache-Control": "max-age=86400"
+    }
   }
 ]
