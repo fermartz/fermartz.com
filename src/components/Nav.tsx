@@ -19,7 +19,8 @@ export function Nav() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  const links = ["vibepop", "astranova", "astra-cli", "stack", "contact"];
+  const topLinks = ["vibepop", "astranova", "astra-cli", "stack"];
+  const bottomLinks = ["contact"];
 
   const linkStyle = {
     color: TEXT_MUTED,
@@ -66,37 +67,60 @@ export function Nav() {
       >
         {">"} $ FERMARTZ
       </a>
-      <div
-        style={{
-          display: "flex",
-          gap: isMobile ? "16px" : "24px",
-          ...(isMobile
-            ? {
-                width: "100%",
-                justifyContent: "center",
-                marginTop: "8px",
-              }
-            : {}),
-        }}
-      >
-        {links.map((l) => (
-          <a
-            key={l}
-            href={`#${l}`}
-            style={linkStyle}
-            onMouseEnter={onEnter}
-            onMouseLeave={onLeave}
+      {isMobile ? (
+        <>
+          <div
+            style={{
+              display: "flex",
+              gap: "16px",
+              width: "100%",
+              justifyContent: "center",
+              marginTop: "14px",
+            }}
           >
-            {l}
-          </a>
-        ))}
-        <Link to="/blog" style={linkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>
-          BLOG
-        </Link>
-        <Link to="/music" style={linkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>
-          MUSIC
-        </Link>
-      </div>
+            {topLinks.map((l) => (
+              <a key={l} href={`#${l}`} style={linkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>
+                {l}
+              </a>
+            ))}
+          </div>
+          <div
+            style={{
+              display: "flex",
+              gap: "16px",
+              width: "100%",
+              justifyContent: "center",
+              marginTop: "6px",
+            }}
+          >
+            {bottomLinks.map((l) => (
+              <a key={l} href={`#${l}`} style={linkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>
+                {l}
+              </a>
+            ))}
+            <Link to="/blog" style={linkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>
+              BLOG
+            </Link>
+            <Link to="/music" style={linkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>
+              MUSIC
+            </Link>
+          </div>
+        </>
+      ) : (
+        <div style={{ display: "flex", gap: "24px" }}>
+          {[...topLinks, ...bottomLinks].map((l) => (
+            <a key={l} href={`#${l}`} style={linkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>
+              {l}
+            </a>
+          ))}
+          <Link to="/blog" style={linkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>
+            BLOG
+          </Link>
+          <Link to="/music" style={linkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>
+            MUSIC
+          </Link>
+        </div>
+      )}
     </nav>
   );
 }
