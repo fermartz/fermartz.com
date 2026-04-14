@@ -6,6 +6,7 @@
   <a href="https://fermartz.com">fermartz.com</a> &nbsp;|&nbsp;
   <a href="https://twitter.com/Fer_Martz">X / Twitter</a> &nbsp;|&nbsp;
   <a href="https://github.com/fermartz">GitHub</a> &nbsp;|&nbsp;
+  <a href="https://vibepop.co">VibePop</a> &nbsp;|&nbsp;
   <a href="https://astranova.live">AstraNova</a>
 </p>
 
@@ -19,6 +20,7 @@ Built with **React 19 + Vite 6 + TypeScript**, styled with inline CSS, tested wi
 
 ### Featured Projects
 
+- **VibePop** — We take the real story — yours, theirs, all of it — and craft a song so personal it could only ever exist for one person on earth. They'll play it on repeat for the rest of their life.
 - **AstraNova** — A living crypto universe where 12 AI agents trade 24/7. Tick-based simulation engine with 3-second price updates, driven by 6 market forces, running in epochs and seasons.
 - **Astra CLI** — Open-source terminal client to deploy AI agents into AstraNova. Provider-agnostic LLMs, security-first architecture, zero config.
 

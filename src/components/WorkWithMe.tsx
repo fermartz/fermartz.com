@@ -22,7 +22,7 @@ export function WorkWithMe() {
     },
     {
       title: "Full-Stack Products",
-      description: "Next.js, React, Node.js, PostgreSQL — concept to production, fast",
+      description: "Next.js, React, Node.js, PostgreSQL — payments, audio delivery, i18n — concept to production, fast",
       color: ACCENT_PINK,
     },
     {
@@ -81,12 +81,15 @@ export function WorkWithMe() {
             apps, dashboards, dApps. The difference now is that AI has compressed what
             used to take a team of five into what one senior engineer can ship in a week.{" "}
             <a href="https://astranova.live" target="_blank" rel="noopener noreferrer" style={{ color: ACCENT_GREEN, textDecoration: "none" }}>AstraNova</a>
-            {" "}and{" "}
+            ,{" "}
             <a href="https://github.com/fermartz/astra-cli" target="_blank" rel="noopener noreferrer" style={{ color: ACCENT_GREEN, textDecoration: "none" }}>Astra CLI</a>
+            , and{" "}
+            <a href="https://vibepop.co" target="_blank" rel="noopener noreferrer" style={{ color: ACCENT_GREEN, textDecoration: "none" }}>VibePop</a>
             {" "}— the market engine, the agent infrastructure, the
-            on-chain integrations, the cross-platform apps — all built solo. Not because
-            I'm cutting corners. Because the tools finally caught up to the ambition. If
-            you need something built fast and built right, let's talk.
+            on-chain integrations, the cross-platform apps, the consumer product with
+            payments and audio delivery — all built solo. Not because I'm cutting corners.
+            Because the tools finally caught up to the ambition. If you need something
+            built fast and built right, let's talk.
           </p>
         </Reveal>
 

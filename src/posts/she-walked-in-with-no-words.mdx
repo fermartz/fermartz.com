@@ -1,0 +1,51 @@
+---
+title: "She Walked In With No Words. Just a Hug."
+date: "2026-03-30"
+slug: "vibepop"
+summary: "Seven years of music obsession, a corrido that made a grown man cry, and the two weeks I spent building VibePop in secret."
+tags: ["vibepop", "build-in-public", "solopreneur", "next.js", "side-project"]
+---
+
+I texted my wife a link with no message attached.
+
+A few minutes later she walked into my office. No words. Just a hug. That was the moment I knew VibePop was real.
+
+---
+
+ For as long as I can remember, music has been running in the background of everything — coding sessions, morning runs, cycling, drives, parties. Over the years I picked up music courses as a hobby: piano, guitar, music theory, electronic music design, synthesis and sound design. Never chasing a performance career, just chasing the understanding. How songs move, how they're constructed, why certain things hit you and others don't.
+
+That curiosity eventually landed me in front of an AI music tool. I was deep in AstraNova development at the time, building on the side. First songs were generic. Expected. I kept adjusting, kept learning, kept chasing something I couldn't name. Then one night I finished a song in Spanish — synth pop base, 80s and 90s energy, modern sound. The moment it started playing I got goosebumps. I sat still and listened to the whole thing. For the first time I could clearly picture it on the radio. That felt like crossing a line.
+
+I kept going. Two full albums for completely made-up artists, just for the craft of it.
+
+Then one morning in a group chat I shared a song as a joke. A friend threw back: *how about a corrido?* I went and wrote a story about him — real details, real personality — turned it into one and dropped it in the chat. Response came fast. *Are you for real. What the hell, it sounds professional.* I shared the same energy in a different chat. Another friend asked me to make one for him. A few minutes after I sent it, he sent an audio message back. Laughing. Crying. Shouting. He couldn't believe it.
+
+That reaction did something to me. Then I found out the brother-in-law of that friend had heard the song and called begging to reach me. That urgency from someone I didn't even know crystallized it: a personalized song built from a real story creates an emotional reaction that almost nothing else does. And people who are bad at giving gifts — I include myself — need a way to turn what they know about someone into something that person will remember forever.
+
+The next day I had a plan. The day after that I had a rough prototype of the gift page.
+
+---
+
+On the technical side I wanted the architecture to match the emotional weight of the product. The stack is Next.js 15 App Router with TypeScript on Vercel, Supabase for the database with row-level security policies, AWS S3 and CloudFront for audio delivery, Stripe Embedded Checkout through Server Actions, and Resend with React Email for bilingual transactional emails. The whole thing is built in English and Spanish via next-intl with subpath routing and automatic browser detection.
+
+The piece I'm most proud of is the gift delivery layer. Every order generates two tokens: a private UUID for the recipient that unlocks the full experience including the personal message, and a shorter public slug for social sharing with sensitive content stripped. Same gift page component, different data path depending on which token matched. The CloudFront signing happens server-side only at SSR time — the private key never reaches the client. Audio URLs carry a 15-minute expiry window. Uploads go through server-side file validation before anything touches storage.
+
+The gift page itself is a two-phase state machine orchestrated with Framer Motion. Phase one is the arrival — typewriter sequence, particle rain, a pulsing play button. Phase two is the reveal — portrait, recipient name, sender line, personal message, and a frosted glass audio player with animated waveform bars. The whole stagger sequence runs across about 2.8 seconds. Vibe theming is driven entirely by CSS custom properties so the same component renders five different emotional experiences.
+
+Three tiers: Spark at $39, Flame at $59, Legacy at $139. The Stripe session stays embedded — the customer never leaves [vibepop.co](https://vibepop.co). The emotional context of the page stays present during payment, which matters.
+
+Before I showed it to anyone I made one for my wife. Wrote her story the way only I could, produced the song, dropped it into the gift page, and texted her the link. No caption.
+
+She walked into my office. No words. Just a hug.
+
+I shipped it the next day.
+
+```ts
+// two tokens, one gift
+// private uuid unlocks the full experience
+// public slug strips what isn't meant to be shared
+const token = crypto.randomUUID();
+const public_slug = nanoid(10);
+```
+
+VibePop is live at [vibepop.co](https://vibepop.co). We'll see how it goes from here.

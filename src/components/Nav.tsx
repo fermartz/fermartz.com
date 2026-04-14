@@ -19,7 +19,7 @@ export function Nav() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  const links = ["astranova", "astra-cli", "stack", "contact"];
+  const links = ["vibepop", "astranova", "astra-cli", "stack", "contact"];
 
   const linkStyle = {
     color: TEXT_MUTED,

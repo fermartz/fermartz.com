@@ -1,5 +1,6 @@
 import {
   ACCENT_GREEN,
+  ACCENT_PINK,
   ACCENT_PURPLE,
   BG_DARK,
   TEXT_PRIMARY,
@@ -32,6 +33,40 @@ export default function FermartzSite() {
 
       <div style={{ position: "relative", zIndex: 1 }}>
         <Hero />
+
+        {/* VibePop */}
+        <ProjectCard
+          id="vibepop"
+          title="VIBEPOP"
+          subtitle="Side Project — Song Gifting"
+          description="We take the real story — yours, theirs, all of it — and craft a song so personal it could only ever exist for one person on earth. They'll play it on repeat for the rest of their life."
+          features={[
+            "Next.js 15 App Router",
+            "Supabase + Row Level Security",
+            "CloudFront signed audio delivery",
+            "Dual-token gift link system",
+            "Stripe embedded checkout",
+            "Framer Motion state machine",
+            "next-intl (EN + ES)",
+            "Server-side URL signing",
+          ]}
+          link="https://vibepop.co"
+          linkText="Give a Song"
+          accent={ACCENT_PINK}
+        >
+          <div
+            style={{
+              display: "flex",
+              gap: "12px",
+              flexWrap: "wrap",
+              marginBottom: "24px",
+            }}
+          >
+            <TokenBadge symbol="SPARK" label="$39" color={ACCENT_PINK} />
+            <TokenBadge symbol="FLAME" label="$59" color="#f59e0b" />
+            <TokenBadge symbol="LEGACY" label="$139" color={ACCENT_PURPLE} />
+          </div>
+        </ProjectCard>
 
         {/* AstraNova */}
         <ProjectCard
