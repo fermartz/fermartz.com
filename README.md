@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="public/banner.png" alt="FERMARTZ Banner" width="100%" />
+  <img src="public/fermartz-banner.svg" alt="FERMARTZ Banner" width="100%" />
 </p>
 
 <p align="center">
