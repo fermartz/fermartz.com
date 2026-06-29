@@ -92,7 +92,7 @@
 
   <!-- === SUBTITLE === -->
   <text x="450" y="230" text-anchor="middle" font-family="'SF Mono', 'Fira Code', 'JetBrains Mono', Consolas, monospace" font-size="13" fill="#8b95a5" letter-spacing="3" opacity="0.7">
-    BUILDING LIVING SYSTEMS WITH AI × CRYPTO × CODE
+    BUILDING PRODUCTION AI — AGENTS × PLATFORMS × CODE
   </text>
 
   <!-- Accent line under subtitle -->
@@ -100,9 +100,9 @@
 
   <!-- === STATUS BADGES === -->
   <g transform="translate(450, 280)" text-anchor="middle" font-family="'SF Mono', 'Fira Code', 'JetBrains Mono', Consolas, monospace" font-size="10" letter-spacing="1.5">
-    <text x="-180" fill="#fd2bff" opacity="0.5">◆ VIBEPOP.CO</text>
-    <text x="0" fill="#06d6a0" opacity="0.5">◆ ASTRANOVA.LIVE</text>
-    <text x="160" fill="#7c3aed" opacity="0.5">◆ ASTRA CLI</text>
+    <text x="-175" fill="#06d6a0" opacity="0.5">◆ DELPHY.NETWORK</text>
+    <text x="0" fill="#7c3aed" opacity="0.5">◆ ASTRANOVA.LIVE</text>
+    <text x="160" fill="#fd2bff" opacity="0.5">◆ ASTRA CLI</text>
   </g>
 
 </svg>

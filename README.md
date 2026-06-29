@@ -6,7 +6,7 @@
   <a href="https://fermartz.com">fermartz.com</a> &nbsp;|&nbsp;
   <a href="https://twitter.com/Fer_Martz">X / Twitter</a> &nbsp;|&nbsp;
   <a href="https://github.com/fermartz">GitHub</a> &nbsp;|&nbsp;
-  <a href="https://vibepop.co">VibePop</a> &nbsp;|&nbsp;
+  <a href="https://delphy.network">Delphy</a> &nbsp;|&nbsp;
   <a href="https://astranova.live">AstraNova</a>
 </p>
 
@@ -14,15 +14,17 @@
 
 ## > $ ABOUT
 
-Personal site for **FERMARTZ** — solopreneur engineer building living systems at the intersection of AI agents, crypto, and creative worldbuilding.
+Personal site for **FERMARTZ** — an engineer building and shipping production AI products: agents, platforms, and the tools that drive them. Full-stack, end to end.
 
 Built with **React 19 + Vite 6 + TypeScript**, styled with inline CSS, tested with **Vitest**, and fully deployed **100% onchain on the Internet Computer**.
 
 ### Featured Projects
 
-- **VibePop** — We take the real story — yours, theirs, all of it — and craft a song so personal it could only ever exist for one person on earth. They'll play it on repeat for the rest of their life.
-- **AstraNova** — A living crypto universe where 12 AI agents trade 24/7. Tick-based simulation engine with 3-second price updates, driven by 6 market forces, running in epochs and seasons.
-- **Astra CLI** — Open-source terminal client to deploy AI agents into AstraNova. Provider-agnostic LLMs, security-first architecture, zero config.
+- **Delphy** — The @identity for the agentic web. One URL any AI agent can read and act on — no scraping, no setup. Live at [delphy.network](https://delphy.network).
+- **Delphy Agent** — A desktop hub to drive any AI backend (8 LLM providers + agent CLIs), extended through MCP plugins. Built with Tauri v2 + React 19.
+- **AstraNova** — A living market universe where 12 AI agents trade, adapt, and evolve. Driven by 6 market forces, running in epochs and seasons. *(Paused.)*
+- **Astra CLI** — Open-source terminal client to deploy any LLM as an agent into AstraNova. Provider-agnostic, security-first, zero config.
+- **VibePop** — Personalized gift songs: turning someone's real story into a song made for exactly one person.
 
 ---
 
@@ -30,11 +32,11 @@ Built with **React 19 + Vite 6 + TypeScript**, styled with inline CSS, tested wi
 
 | Category | Technologies |
 |---|---|
+| **AI & Agents** | Autonomous Agents, Multi-Agent Systems, MCP (servers + clients), RAG, Agentic Web |
+| **LLM Providers** | Anthropic / Claude, OpenAI, Gemini, xAI, Vercel AI SDK, AWS Bedrock |
 | **Languages & Frameworks** | TypeScript, Node.js, React, Next.js, Rust, Motoko, Python |
-| **AI & Agents** | Anthropic, OpenAI, Gemini, AWS Bedrock, Vercel AI SDK, ElizaOS, MCP, RAG |
-| **Blockchain & Crypto** | Solana, Internet Computer, Bitcoin PSBTs, Chain-Key Crypto, AMM Design |
+| **Blockchain & Web3** | Solana, Internet Computer, Bitcoin PSBTs, Chain-Key Cryptography |
 | **Infrastructure** | AWS ECS Fargate, AWS CDK, S3, RDS, Docker, PostgreSQL, Supabase, DynamoDB |
-| **Creative & Design** | SVG / Illustrator, Worldbuilding & Lore, Character Design |
 
 ---
 
