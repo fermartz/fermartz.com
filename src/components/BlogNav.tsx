@@ -77,14 +77,14 @@ export default function BlogNav() {
           </Link>
         )}
         {!isMobile && (
-          <Link
-            to="/#contact"
+          <a
+            href="mailto:fer.martz@icloud.com"
             style={linkStyle}
             onMouseEnter={(e) => (e.currentTarget.style.color = ACCENT_GREEN)}
             onMouseLeave={(e) => (e.currentTarget.style.color = TEXT_MUTED)}
           >
             CONTACT
-          </Link>
+          </a>
         )}
       </div>
     </nav>

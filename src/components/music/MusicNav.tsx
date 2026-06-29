@@ -78,9 +78,9 @@ export function MusicNav() {
         </Link>
         <span style={{ ...linkStyle, color: ACCENT_GREEN }}>MUSIC</span>
         {!isMobile && (
-          <Link to="/#contact" style={linkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>
+          <a href="mailto:fer.martz@icloud.com" style={linkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>
             CONTACT
-          </Link>
+          </a>
         )}
       </div>
     </nav>
