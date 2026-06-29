@@ -22,8 +22,7 @@ export function Nav() {
   const topLinks = ["delphy", "astranova", "stack"];
   const bottomLinks = ["contact"];
 
-  const hrefFor = (l: string) =>
-    l === "contact" ? "mailto:fer.martz@icloud.com" : `#${l}`;
+  const hrefFor = (l: string) => `#${l}`;
 
   const linkStyle = {
     color: TEXT_MUTED,

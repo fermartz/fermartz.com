@@ -214,7 +214,7 @@ export function WorkWithMe() {
               </p>
               <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
                 <CtaLink href="/fermartz_2026_resume.pdf" accent={ACCENT_GREEN} newTab>
-                  Résumé
+                  Resume
                 </CtaLink>
                 <CtaLink href="https://linkedin.com/in/fernando-martinez-valdez" accent={ACCENT_GREEN}>
                   LinkedIn
