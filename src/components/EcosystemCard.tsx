@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { BG_DARK, BG_CARD, TEXT_PRIMARY, TEXT_MUTED } from "../theme.js";
 import { Reveal } from "./Effects.tsx";
 import { CtaLink } from "./CtaLink.tsx";
+import { StoryLink } from "./StoryLink.tsx";
 
 type EcoProject = {
   subtitle: string;
@@ -12,6 +13,8 @@ type EcoProject = {
   link: string;
   linkText: string;
   accent: string;
+  /** Tag to filter the blog by for this project's build-in-public posts. */
+  storyTag?: string;
 };
 
 type EcosystemCardProps = {
@@ -152,15 +155,21 @@ function EcoColumn({ project }: { project: EcoProject }) {
         ))}
       </div>
 
-      {/* CTA */}
-      <CtaLink
-        href={project.link}
-        accent={accent}
-        arrow
-        style={{ marginTop: "auto", alignSelf: "flex-start", fontSize: "12px", padding: "11px 22px" }}
+      {/* CTA + story link */}
+      <div
+        style={{
+          marginTop: "auto",
+          display: "flex",
+          alignItems: "center",
+          gap: "16px",
+          flexWrap: "wrap",
+        }}
       >
-        {project.linkText}
-      </CtaLink>
+        <CtaLink href={project.link} accent={accent} arrow style={{ fontSize: "12px", padding: "11px 22px" }}>
+          {project.linkText}
+        </CtaLink>
+        {project.storyTag && <StoryLink tag={project.storyTag} accent={accent} />}
+      </div>
     </div>
   );
 }

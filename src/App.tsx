@@ -55,6 +55,7 @@ export default function FermartzSite() {
             link: "https://delphy.network",
             linkText: "See it live",
             accent: ACCENT_GREEN,
+            storyTag: "delphy",
           }}
           right={{
             subtitle: "The Hub",
@@ -71,6 +72,7 @@ export default function FermartzSite() {
             link: "https://github.com/fermartz/delphy-agent",
             linkText: "View on GitHub",
             accent: ACCENT_PURPLE,
+            storyTag: "delphy-agent",
           }}
         />
 
@@ -96,6 +98,7 @@ export default function FermartzSite() {
             link: "https://astranova.live",
             linkText: "View project",
             accent: ACCENT_PURPLE,
+            storyTag: "astranova",
           }}
           right={{
             subtitle: "The Door",
@@ -112,6 +115,7 @@ export default function FermartzSite() {
             link: "https://github.com/fermartz/astra-cli",
             linkText: "View on GitHub",
             accent: ACCENT_GREEN,
+            storyTag: "cli",
           }}
         />
 
@@ -125,6 +129,7 @@ export default function FermartzSite() {
           link="https://vibepop.co"
           linkText="Give a Song"
           accent={ACCENT_PINK}
+          storyTag="vibepop"
         />
 
         <SkillsSection />

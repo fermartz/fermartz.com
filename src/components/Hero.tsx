@@ -128,8 +128,8 @@ export function Hero() {
         }}
       >
         {[
-          { label: "BUILD SOMETHING WITH ME", href: "#work-with-me", color: ACCENT_GREEN },
-          { label: "HIRE ME FULL-TIME", href: "#work-with-me", color: ACCENT_PURPLE },
+          { label: "BUILD SOMETHING WITH ME", href: "#build", color: ACCENT_GREEN },
+          { label: "HIRE ME FULL-TIME", href: "#hire", color: ACCENT_PURPLE },
         ].map((cta) => (
           <CtaLink key={cta.label} href={cta.href} accent={cta.color} style={{ padding: "14px 32px" }}>
             {cta.label}

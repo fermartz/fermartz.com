@@ -6,6 +6,8 @@ type CtaLinkProps = {
   accent: string;
   /** Append a " →" after the label. */
   arrow?: boolean;
+  /** Force opening in a new tab (defaults to true for http(s) links). */
+  newTab?: boolean;
   /** Extra style overrides merged last (padding, fontSize, marginTop, etc.). */
   style?: CSSProperties;
 };
@@ -17,8 +19,8 @@ type CtaLinkProps = {
  * the external-vs-mailto target handling. Uses e.currentTarget — never
  * e.target — so styling stays correct even with child elements.
  */
-export function CtaLink({ href, children, accent, arrow = false, style }: CtaLinkProps) {
-  const isExternal = href.startsWith("http");
+export function CtaLink({ href, children, accent, arrow = false, newTab, style }: CtaLinkProps) {
+  const isExternal = newTab ?? href.startsWith("http");
 
   const setActive = (el: HTMLElement) => {
     el.style.background = `${accent}20`;

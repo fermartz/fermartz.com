@@ -2,6 +2,7 @@ import { useState } from "react";
 import { BG_CARD, TEXT_PRIMARY, TEXT_MUTED } from "../theme.js";
 import { Reveal } from "./Effects.tsx";
 import { CtaLink } from "./CtaLink.tsx";
+import { StoryLink } from "./StoryLink.tsx";
 
 type CompactCardProps = {
   id: string;
@@ -12,6 +13,8 @@ type CompactCardProps = {
   link: string;
   linkText: string;
   accent: string;
+  /** Tag to filter the blog by for this project's build-in-public posts. */
+  storyTag?: string;
 };
 
 export function CompactCard({
@@ -23,6 +26,7 @@ export function CompactCard({
   link,
   linkText,
   accent,
+  storyTag,
 }: CompactCardProps) {
   const [hovered, setHovered] = useState(false);
 
@@ -122,15 +126,22 @@ export function CompactCard({
             </div>
           </div>
 
-          {/* Right: CTA */}
-          <CtaLink
-            href={link}
-            accent={accent}
-            arrow
-            style={{ position: "relative", flexShrink: 0, fontSize: "12px" }}
+          {/* Right: CTA + story link */}
+          <div
+            style={{
+              position: "relative",
+              flexShrink: 0,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-start",
+              gap: "12px",
+            }}
           >
-            {linkText}
-          </CtaLink>
+            <CtaLink href={link} accent={accent} arrow style={{ fontSize: "12px" }}>
+              {linkText}
+            </CtaLink>
+            {storyTag && <StoryLink tag={storyTag} accent={accent} />}
+          </div>
         </div>
       </Reveal>
     </section>

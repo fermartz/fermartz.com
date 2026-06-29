@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { HexGrid, globalStyles } from "./Layout.tsx";
 import BlogNav from "./BlogNav.jsx";
 import {
@@ -13,6 +13,12 @@ import {
 import { postsNewestFirst as posts } from "../utils/postLoader.ts";
 
 export default function BlogIndex() {
+  const [searchParams] = useSearchParams();
+  const activeTag = searchParams.get("tag");
+  const visiblePosts = activeTag
+    ? posts.filter((post) => post.tags?.includes(activeTag))
+    : posts;
+
   return (
     <div
       style={{
@@ -53,8 +59,32 @@ export default function BlogIndex() {
           BLOG
         </h1>
 
+        {activeTag && (
+          <div
+            style={{
+              marginBottom: "32px",
+              fontFamily: FONT_MONO,
+              fontSize: "13px",
+              color: TEXT_MUTED,
+              letterSpacing: "1px",
+            }}
+          >
+            Filtered by{" "}
+            <span style={{ color: ACCENT_GREEN, textTransform: "uppercase" }}>{activeTag}</span>
+            {"  ·  "}
+            <Link to="/blog" style={{ color: ACCENT_PURPLE, textDecoration: "none" }}>
+              show all
+            </Link>
+          </div>
+        )}
+
         <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-          {posts.map((post) => (
+          {visiblePosts.length === 0 && (
+            <p style={{ fontFamily: FONT_MONO, fontSize: "14px", color: TEXT_MUTED }}>
+              No posts tagged “{activeTag}” yet.
+            </p>
+          )}
+          {visiblePosts.map((post) => (
             <Link
               key={post.slug}
               to={`/blog/${post.slug}`}

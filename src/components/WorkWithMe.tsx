@@ -143,9 +143,85 @@ export function WorkWithMe() {
         </Reveal>
 
         <Reveal delay={300}>
-          <CtaLink href="mailto:fer.martz@icloud.com" accent={ACCENT_PINK} arrow style={{ padding: "14px 40px" }}>
-            LET'S BUILD SOMETHING
-          </CtaLink>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+              gap: "16px",
+              textAlign: "left",
+            }}
+          >
+            {/* Freelance path */}
+            <div
+              id="build"
+              style={{
+                padding: "28px",
+                background: BG_CARD,
+                border: `1px solid ${ACCENT_PINK}20`,
+                borderRadius: "4px",
+                display: "flex",
+                flexDirection: "column",
+                gap: "16px",
+                alignItems: "flex-start",
+              }}
+            >
+              <div
+                style={{
+                  fontFamily: "'SF Mono', 'Fira Code', monospace",
+                  fontSize: "15px",
+                  fontWeight: 700,
+                  color: ACCENT_PINK,
+                  letterSpacing: "1px",
+                }}
+              >
+                Need something built?
+              </div>
+              <p style={{ fontFamily: "monospace", fontSize: "13px", color: TEXT_MUTED, lineHeight: 1.7, margin: 0 }}>
+                Freelance — I scope it, build it, and ship it. Idea to production, fast.
+              </p>
+              <CtaLink href="mailto:fer.martz@icloud.com" accent={ACCENT_PINK} arrow>
+                Start a project
+              </CtaLink>
+            </div>
+
+            {/* Full-time path */}
+            <div
+              id="hire"
+              style={{
+                padding: "28px",
+                background: BG_CARD,
+                border: `1px solid ${ACCENT_GREEN}20`,
+                borderRadius: "4px",
+                display: "flex",
+                flexDirection: "column",
+                gap: "16px",
+                alignItems: "flex-start",
+              }}
+            >
+              <div
+                style={{
+                  fontFamily: "'SF Mono', 'Fira Code', monospace",
+                  fontSize: "15px",
+                  fontWeight: 700,
+                  color: ACCENT_GREEN,
+                  letterSpacing: "1px",
+                }}
+              >
+                Hiring for a role?
+              </div>
+              <p style={{ fontFamily: "monospace", fontSize: "13px", color: TEXT_MUTED, lineHeight: 1.7, margin: 0 }}>
+                Open to full-time roles building AI products. Here's the rundown.
+              </p>
+              <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+                <CtaLink href="/fermartz_2026_resume.pdf" accent={ACCENT_GREEN} newTab>
+                  Résumé
+                </CtaLink>
+                <CtaLink href="https://linkedin.com/in/fernando-martinez-valdez" accent={ACCENT_GREEN}>
+                  LinkedIn
+                </CtaLink>
+              </div>
+            </div>
+          </div>
         </Reveal>
       </div>
     </section>
