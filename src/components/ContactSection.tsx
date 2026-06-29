@@ -59,41 +59,45 @@ export function ContactSection() {
               gap: "16px",
             }}
           >
-            {links.map((l) => (
-              <a
-                key={l.label}
-                href={l.href}
-                {...(l.href.startsWith("mailto:")
-                  ? {}
-                  : { target: "_blank", rel: "noopener noreferrer" })}
-                style={{
-                  fontFamily: "monospace",
-                  fontSize: "12px",
-                  letterSpacing: "2px",
-                  color: l.color,
-                  textDecoration: "none",
-                  padding: "14px 28px",
-                  border: `1px solid ${l.color}30`,
-                  borderRadius: "2px",
-                  background: `${l.color}06`,
-                  transition: "all 0.3s ease",
-                }}
-                onMouseEnter={(e) => {
-                  const el = e.target as HTMLElement;
-                  el.style.background = `${l.color}15`;
-                  el.style.borderColor = l.color;
-                  el.style.boxShadow = `0 0 20px ${l.color}15`;
-                }}
-                onMouseLeave={(e) => {
-                  const el = e.target as HTMLElement;
-                  el.style.background = `${l.color}06`;
-                  el.style.borderColor = `${l.color}30`;
-                  el.style.boxShadow = "none";
-                }}
-              >
-                {l.label}
-              </a>
-            ))}
+            {links.map((l) => {
+              const setActive = (el: HTMLElement) => {
+                el.style.background = `${l.color}15`;
+                el.style.borderColor = l.color;
+                el.style.boxShadow = `0 0 20px ${l.color}15`;
+              };
+              const setIdle = (el: HTMLElement) => {
+                el.style.background = `${l.color}06`;
+                el.style.borderColor = `${l.color}30`;
+                el.style.boxShadow = "none";
+              };
+              return (
+                <a
+                  key={l.label}
+                  href={l.href}
+                  {...(l.href.startsWith("mailto:")
+                    ? {}
+                    : { target: "_blank", rel: "noopener noreferrer" })}
+                  style={{
+                    fontFamily: "monospace",
+                    fontSize: "12px",
+                    letterSpacing: "2px",
+                    color: l.color,
+                    textDecoration: "none",
+                    padding: "14px 28px",
+                    border: `1px solid ${l.color}30`,
+                    borderRadius: "2px",
+                    background: `${l.color}06`,
+                    transition: "all 0.3s ease",
+                  }}
+                  onMouseEnter={(e) => setActive(e.currentTarget)}
+                  onMouseLeave={(e) => setIdle(e.currentTarget)}
+                  onFocus={(e) => setActive(e.currentTarget)}
+                  onBlur={(e) => setIdle(e.currentTarget)}
+                >
+                  {l.label}
+                </a>
+              );
+            })}
           </div>
         </Reveal>
 

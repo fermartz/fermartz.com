@@ -1,5 +1,7 @@
 import { useState } from "react";
+import type { KeyboardEvent } from "react";
 import { ACCENT_PURPLE, BG_CARD, TEXT_PRIMARY, TEXT_MUTED, FONT_MONO } from "../../theme.js";
+import type { Playlist } from "../../types.ts";
 import { getGenre, getTagStyle } from "../../utils/musicHelpers.ts";
 
 export function PlaylistCard({
@@ -7,7 +9,7 @@ export function PlaylistCard({
   onClick,
   isMobile,
 }: {
-  playlist: any;
+  playlist: Playlist;
   onClick: () => void;
   isMobile: boolean;
 }) {
@@ -15,9 +17,20 @@ export function PlaylistCard({
   const genre = getGenre(playlist.genre);
   const trackCount = playlist.tracks ? playlist.tracks.length : 0;
 
+  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      onClick();
+    }
+  };
+
   return (
     <div
+      role="button"
+      tabIndex={0}
+      aria-label={`Open playlist ${playlist.name}`}
       onClick={onClick}
+      onKeyDown={handleKeyDown}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{

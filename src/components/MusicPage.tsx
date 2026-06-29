@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { HexGrid, globalStyles } from "./Layout.tsx";
+import type { Playlist } from "../types.ts";
 import { useAudioPlayer } from "../contexts/AudioContext.jsx";
 import { BG_DARK, TEXT_PRIMARY, TEXT_MUTED, FONT_MONO } from "../theme.js";
 import musicData from "../data/music.json";
@@ -44,14 +45,14 @@ export default function MusicPage() {
   }, [currentPlaylist]);
 
   const handleNavigate = useCallback(
-    (playlist: any) => {
+    (playlist: Playlist | null) => {
       setCurrentPlaylist(playlist);
     },
     [setCurrentPlaylist]
   );
 
   const handleSelectPlaylist = useCallback(
-    (playlist: any) => {
+    (playlist: Playlist) => {
       setCurrentPlaylist(playlist);
     },
     [setCurrentPlaylist]
@@ -90,13 +91,13 @@ export default function MusicPage() {
 
         {view === "playlists" && (
           <PlaylistGrid
-            playlists={(musicData as any).playlists}
+            playlists={(musicData as { playlists: Playlist[] }).playlists}
             onSelectPlaylist={handleSelectPlaylist}
             isMobile={isMobile}
           />
         )}
 
-        {view === "tracks" && (
+        {view === "tracks" && currentPlaylist && (
           <TrackView
             playlist={currentPlaylist}
             currentTrack={currentTrack}

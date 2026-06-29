@@ -1,21 +1,22 @@
 import { TEXT_PRIMARY, TEXT_MUTED, FONT_MONO } from "../../theme.js";
+import type { Playlist, Track } from "../../types.ts";
 import { BackButton } from "./BackButton.tsx";
 import { NowPlayingBar } from "./NowPlayingBar.tsx";
 import { TrackItem } from "./TrackItem.tsx";
 
 type TrackViewProps = {
-  playlist: any;
-  currentTrack: any;
+  playlist: Playlist;
+  currentTrack: Track | null;
   isPlaying: boolean;
   duration: number;
   currentTime: number;
-  analyser: any;
+  analyser: AnalyserNode | null;
   volume: number;
   playbackError: string | null;
   onRetryPlayback: () => void;
   onDismissError: () => void;
   onBack: () => void;
-  onSelectTrack: (t: any) => void;
+  onSelectTrack: (t: Track) => void;
   onPlayPause: () => void;
   onPrev: () => void;
   onNext: () => void;
@@ -100,12 +101,12 @@ export function TrackView({
       </div>
 
       <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
-        {playlist.tracks.map((track: any) => (
+        {playlist.tracks.map((track) => (
           <TrackItem
             key={track.id}
             track={track}
-            isActive={currentTrack && currentTrack.id === track.id}
-            isPlaying={isPlaying && currentTrack && currentTrack.id === track.id}
+            isActive={currentTrack?.id === track.id}
+            isPlaying={isPlaying && currentTrack?.id === track.id}
             onClick={() => onSelectTrack(track)}
             isMobile={isMobile}
           />

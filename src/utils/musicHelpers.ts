@@ -24,6 +24,16 @@ export function getTagStyle(tag: string) {
   return { color: t.color, background: t.bg };
 }
 
-export function getGenre(genreId: string): any {
-  return (musicData as any).genres[genreId] || {};
+type Genre = {
+  id: string;
+  label: string;
+  accent: string;
+  iconBg: string;
+  iconColor: string;
+  tagLabel: string;
+};
+
+export function getGenre(genreId: string): Partial<Genre> {
+  const genres = (musicData as { genres?: Record<string, Genre> }).genres ?? {};
+  return genres[genreId] || {};
 }

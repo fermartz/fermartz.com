@@ -9,4 +9,5 @@ class IntersectionObserverStub {
     return [];
   }
 }
-(globalThis as any).IntersectionObserver = IntersectionObserverStub;
+globalThis.IntersectionObserver =
+  IntersectionObserverStub as unknown as typeof IntersectionObserver;

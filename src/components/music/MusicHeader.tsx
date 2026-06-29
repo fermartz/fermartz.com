@@ -1,4 +1,5 @@
 import { TEXT_PRIMARY, TEXT_MUTED, FONT_MONO } from "../../theme.js";
+import type { Playlist } from "../../types.ts";
 import { Breadcrumb } from "./Breadcrumb.tsx";
 
 export function MusicHeader({
@@ -6,8 +7,8 @@ export function MusicHeader({
   onNavigate,
   isMobile,
 }: {
-  playlist: any;
-  onNavigate: (p: any) => void;
+  playlist: Playlist | null;
+  onNavigate: (p: Playlist | null) => void;
   isMobile: boolean;
 }) {
   return (

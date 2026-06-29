@@ -1,3 +1,4 @@
+import type { Playlist } from "../../types.ts";
 import { PlaylistCard } from "./PlaylistCard.tsx";
 
 export function PlaylistGrid({
@@ -5,8 +6,8 @@ export function PlaylistGrid({
   onSelectPlaylist,
   isMobile,
 }: {
-  playlists: any[];
-  onSelectPlaylist: (p: any) => void;
+  playlists: Playlist[];
+  onSelectPlaylist: (p: Playlist) => void;
   isMobile: boolean;
 }) {
   return (

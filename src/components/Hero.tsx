@@ -5,6 +5,7 @@ import {
   TEXT_MUTED,
 } from "../theme.js";
 import { GlitchText, TypeWriter } from "./Effects.tsx";
+import { CtaLink } from "./CtaLink.tsx";
 
 export function Hero() {
   return (
@@ -42,6 +43,8 @@ export function Hero() {
           height="100"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 200 200"
+          aria-hidden="true"
+          focusable="false"
         >
           <path
             fill={TEXT_PRIMARY}
@@ -128,34 +131,9 @@ export function Hero() {
           { label: "BUILD SOMETHING WITH ME", href: "#work-with-me", color: ACCENT_GREEN },
           { label: "HIRE ME FULL-TIME", href: "#work-with-me", color: ACCENT_PURPLE },
         ].map((cta) => (
-          <a
-            key={cta.label}
-            href={cta.href}
-            style={{
-              fontFamily: "monospace",
-              fontSize: "13px",
-              letterSpacing: "2px",
-              color: cta.color,
-              textDecoration: "none",
-              padding: "14px 32px",
-              border: `1px solid ${cta.color}40`,
-              borderRadius: "2px",
-              background: `${cta.color}08`,
-              transition: "all 0.3s ease",
-            }}
-            onMouseEnter={(e) => {
-              const el = e.currentTarget as HTMLElement;
-              el.style.background = `${cta.color}20`;
-              el.style.borderColor = cta.color;
-            }}
-            onMouseLeave={(e) => {
-              const el = e.currentTarget as HTMLElement;
-              el.style.background = `${cta.color}08`;
-              el.style.borderColor = `${cta.color}40`;
-            }}
-          >
+          <CtaLink key={cta.label} href={cta.href} accent={cta.color} style={{ padding: "14px 32px" }}>
             {cta.label}
-          </a>
+          </CtaLink>
         ))}
       </div>
 

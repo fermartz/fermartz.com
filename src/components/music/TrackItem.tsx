@@ -1,5 +1,7 @@
 import { useState } from "react";
+import type { KeyboardEvent } from "react";
 import { ACCENT_PURPLE, BG_CARD, TEXT_PRIMARY, TEXT_MUTED, FONT_MONO } from "../../theme.js";
+import type { Track } from "../../types.ts";
 import { getGenre } from "../../utils/musicHelpers.ts";
 
 export function TrackItem({
@@ -9,7 +11,7 @@ export function TrackItem({
   onClick,
   isMobile,
 }: {
-  track: any;
+  track: Track;
   isActive: boolean;
   isPlaying: boolean;
   onClick: () => void;
@@ -22,10 +24,21 @@ export function TrackItem({
   const tagBg = genreData.iconBg || BG_CARD;
   const tagLabel = genreData.tagLabel || track.genre.toUpperCase();
 
+  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      onClick();
+    }
+  };
+
   return (
     <div>
       <div
+        role="button"
+        tabIndex={0}
+        aria-label={`Play ${track.name}`}
         onClick={onClick}
+        onKeyDown={handleKeyDown}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
         style={{

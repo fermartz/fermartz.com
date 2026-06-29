@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { ACCENT_GREEN, ACCENT_PURPLE, BG_DARK, TEXT_MUTED, FONT_MONO } from "../theme.js";
+import { ACCENT_GREEN, TEXT_MUTED, FONT_MONO } from "../theme.js";
 
 export default function BlogNav() {
   const [scrolled, setScrolled] = useState(false);
@@ -26,7 +26,7 @@ export default function BlogNav() {
     fontSize: isMobile ? "10px" : "12px",
     textDecoration: "none",
     letterSpacing: "1.5px",
-    textTransform: "uppercase",
+    textTransform: "uppercase" as const,
     transition: "color 0.2s",
   };
 
@@ -70,8 +70,8 @@ export default function BlogNav() {
           <Link
             to="/blog"
             style={linkStyle}
-            onMouseEnter={(e) => ((e.target as HTMLElement).style.color = ACCENT_GREEN)}
-            onMouseLeave={(e) => ((e.target as HTMLElement).style.color = TEXT_MUTED)}
+            onMouseEnter={(e) => (e.currentTarget.style.color = ACCENT_GREEN)}
+            onMouseLeave={(e) => (e.currentTarget.style.color = TEXT_MUTED)}
           >
             ← BLOG
           </Link>
@@ -80,8 +80,8 @@ export default function BlogNav() {
           <Link
             to="/#contact"
             style={linkStyle}
-            onMouseEnter={(e) => ((e.target as HTMLElement).style.color = ACCENT_GREEN)}
-            onMouseLeave={(e) => ((e.target as HTMLElement).style.color = TEXT_MUTED)}
+            onMouseEnter={(e) => (e.currentTarget.style.color = ACCENT_GREEN)}
+            onMouseLeave={(e) => (e.currentTarget.style.color = TEXT_MUTED)}
           >
             CONTACT
           </Link>

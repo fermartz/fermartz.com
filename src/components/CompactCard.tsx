@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { BG_CARD, TEXT_PRIMARY, TEXT_MUTED } from "../theme.js";
 import { Reveal } from "./Effects.tsx";
+import { CtaLink } from "./CtaLink.tsx";
 
 type CompactCardProps = {
   id: string;
@@ -122,41 +123,14 @@ export function CompactCard({
           </div>
 
           {/* Right: CTA */}
-          <a
+          <CtaLink
             href={link}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              position: "relative",
-              flexShrink: 0,
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "8px",
-              fontFamily: "monospace",
-              fontSize: "12px",
-              letterSpacing: "2px",
-              color: accent,
-              textDecoration: "none",
-              padding: "12px 24px",
-              border: `1px solid ${accent}40`,
-              borderRadius: "2px",
-              background: `${accent}08`,
-              transition: "all 0.3s ease",
-              textTransform: "uppercase",
-            }}
-            onMouseEnter={(e) => {
-              const el = e.currentTarget as HTMLElement;
-              el.style.background = `${accent}20`;
-              el.style.borderColor = accent;
-            }}
-            onMouseLeave={(e) => {
-              const el = e.currentTarget as HTMLElement;
-              el.style.background = `${accent}08`;
-              el.style.borderColor = `${accent}40`;
-            }}
+            accent={accent}
+            arrow
+            style={{ position: "relative", flexShrink: 0, fontSize: "12px" }}
           >
-            {linkText} →
-          </a>
+            {linkText}
+          </CtaLink>
         </div>
       </Reveal>
     </section>

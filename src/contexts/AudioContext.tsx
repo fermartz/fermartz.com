@@ -10,8 +10,16 @@
  * prefix. Pure helpers (validation, error mapping, safePlay) live in
  * utils/audioHelpers.ts and are individually unit-testable.
  */
-import { createContext, useContext, useState, useRef, useEffect, useCallback } from "react";
-import musicData from "../data/music.json";
+import {
+  createContext,
+  useContext,
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  type ReactNode,
+} from "react";
+import type { Playlist, Track } from "../types.ts";
 import {
   isValidPlaylist,
   isValidTrack,
@@ -26,24 +34,53 @@ const S3_BASE =
   (import.meta.env.VITE_MUSIC_S3_BASE as string | undefined) ||
   "https://fermartz-site-music.s3.amazonaws.com";
 
-const AudioPlayerContext = createContext(null);
+export type AudioPlayerContextValue = {
+  currentPlaylist: Playlist | null;
+  setCurrentPlaylist: (playlist: Playlist | null) => void;
+  currentTrack: Track | null;
+  isPlaying: boolean;
+  progress: number;
+  currentTime: number;
+  duration: number;
+  volume: number;
+  analyserNode: AnalyserNode | null;
+  hasEverPlayed: boolean;
+  playbackError: string | null;
+  retryPlayback: () => void;
+  dismissError: () => void;
+  playTrack: (track: Track) => void;
+  handlePlayPause: () => void;
+  handlePrev: () => void;
+  handleNext: () => void;
+  handleSeek: (time: number) => void;
+  handleVolumeChange: (val: number) => void;
+};
 
-export function AudioPlayerProvider({ children }) {
-  const [currentPlaylist, setCurrentPlaylist] = useState(null);
-  const [currentTrack, setCurrentTrack] = useState(null);
+const AudioPlayerContext = createContext<AudioPlayerContextValue | null>(null);
+
+export function AudioPlayerProvider({ children }: { children: ReactNode }) {
+  const [currentPlaylist, setCurrentPlaylist] = useState<Playlist | null>(null);
+  const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(0.75);
   const [hasEverPlayed, setHasEverPlayed] = useState(false);
-  const [analyserNode, setAnalyserNode] = useState(null);
+  const [analyserNode, setAnalyserNode] = useState<AnalyserNode | null>(null);
   // User-visible error state for track load / playback failures. Cleared on
   // every new track selection and on any successful play() resolution.
   const [playbackError, setPlaybackError] = useState<string | null>(null);
 
-  const audioRef = useRef(null);
-  const audioCtxRef = useRef(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const audioCtxRef = useRef<AudioContext | null>(null);
+  // Mirror volume in a ref so initAudio doesn't depend on the volume state
+  // (otherwise every volume-slider tick would recreate initAudio → playTrack
+  // → handlePlayPause/navigate, thrashing the whole callback graph).
+  const volumeRef = useRef(volume);
+  useEffect(() => {
+    volumeRef.current = volume;
+  }, [volume]);
 
   // Lazily construct the <audio> element and Web Audio graph. Wrapped in
   // try/catch so browsers without Web Audio (older Safari, locked iframes)
@@ -51,31 +88,39 @@ export function AudioPlayerProvider({ children }) {
   const initAudio = useCallback(() => {
     try {
       if (!audioRef.current) {
-        audioRef.current = new Audio();
-        audioRef.current.crossOrigin = "anonymous";
-        audioRef.current.volume = volume;
+        const el = new Audio();
+        el.crossOrigin = "anonymous";
+        el.volume = volumeRef.current;
+        audioRef.current = el;
       }
-      if (!audioCtxRef.current) {
-        const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+      const audioEl = audioRef.current;
+      if (!audioCtxRef.current && audioEl) {
+        const w = window as typeof window & {
+          webkitAudioContext?: typeof AudioContext;
+        };
+        const AudioCtx = window.AudioContext || w.webkitAudioContext;
         if (!AudioCtx) {
           console.warn("[audio] Web Audio API not supported in this browser");
           return;
         }
-        audioCtxRef.current = new AudioCtx();
-        const source = audioCtxRef.current.createMediaElementSource(audioRef.current);
-        const analyser = audioCtxRef.current.createAnalyser();
+        const ctx = new AudioCtx();
+        const source = ctx.createMediaElementSource(audioEl);
+        const analyser = ctx.createAnalyser();
         analyser.fftSize = 64;
         source.connect(analyser);
-        analyser.connect(audioCtxRef.current.destination);
+        analyser.connect(ctx.destination);
+        audioCtxRef.current = ctx;
         setAnalyserNode(analyser);
       }
-      if (audioCtxRef.current.state === "suspended") {
-        audioCtxRef.current.resume().catch((err) => console.warn("[audio] resume failed:", err));
+      if (audioCtxRef.current?.state === "suspended") {
+        audioCtxRef.current
+          .resume()
+          .catch((err) => console.warn("[audio] resume failed:", err));
       }
     } catch (err) {
       console.error("[audio] initialization failed:", err);
     }
-  }, [volume]);
+  }, []);
 
   // Time update and event handling
   useEffect(() => {
@@ -93,7 +138,8 @@ export function AudioPlayerProvider({ children }) {
     const handleEnded = () => {
       if (!currentPlaylist || !currentTrack) return;
       const tracks = currentPlaylist.tracks;
-      const nextTrack = tracks[(tracks.findIndex((t) => t.id === currentTrack.id) + 1) % tracks.length];
+      const nextTrack =
+        tracks[(tracks.findIndex((t) => t.id === currentTrack.id) + 1) % tracks.length];
       audio.src = `${S3_BASE}${nextTrack.url}`;
       audio.load();
       setCurrentTrack(nextTrack);
@@ -101,7 +147,7 @@ export function AudioPlayerProvider({ children }) {
       setDuration(0);
       setProgress(0);
       setPlaybackError(null);
-      safePlay(audio, "auto-advance").then(() => setIsPlaying(true));
+      safePlay(audio, "auto-advance").then((ok) => setIsPlaying(ok));
     };
 
     // Surface element-level errors (404, CORS, decode, network) to the UI.
@@ -145,7 +191,7 @@ export function AudioPlayerProvider({ children }) {
   );
 
   const playTrack = useCallback(
-    (track: unknown) => {
+    (track: Track) => {
       // Validate track shape before any side effects — prevents crashes from
       // malformed music.json entries or accidental null/undefined propagation.
       if (!isValidTrack(track)) {
@@ -165,8 +211,10 @@ export function AudioPlayerProvider({ children }) {
           audio.pause();
           setIsPlaying(false);
         } else {
-          safePlay(audio, "resume");
-          setIsPlaying(true);
+          safePlay(audio, "resume").then((ok) => {
+            setIsPlaying(ok);
+            if (!ok) setPlaybackError("Couldn't start playback. Tap play to try again.");
+          });
         }
         return;
       }
@@ -179,8 +227,9 @@ export function AudioPlayerProvider({ children }) {
       setProgress(0);
       setPlaybackError(null);
       setHasEverPlayed(true);
-      safePlay(audio, "playTrack").then(() => {
-        setIsPlaying(true);
+      safePlay(audio, "playTrack").then((ok) => {
+        setIsPlaying(ok);
+        if (!ok) setPlaybackError("Couldn't start playback. Tap play to try again.");
       });
     },
     [currentTrack, isPlaying, initAudio]
@@ -196,12 +245,15 @@ export function AudioPlayerProvider({ children }) {
     const audio = audioRef.current;
     if (!audio || !currentTrack) return;
     audio.load();
-    safePlay(audio, "retry").then(() => setIsPlaying(true));
+    safePlay(audio, "retry").then((ok) => {
+      setIsPlaying(ok);
+      if (!ok) setPlaybackError("Couldn't start playback. Tap play to try again.");
+    });
   }, [currentTrack]);
 
   // Validated playlist setter — null is allowed (used to return to the
   // playlist grid). Any other non-conforming input is logged and ignored.
-  const selectPlaylist = useCallback((playlist: unknown) => {
+  const selectPlaylist = useCallback((playlist: Playlist | null) => {
     if (playlist === null) {
       setCurrentPlaylist(null);
       return;
@@ -215,18 +267,22 @@ export function AudioPlayerProvider({ children }) {
 
   const handlePlayPause = useCallback(() => {
     if (!currentTrack) {
-      if (currentPlaylist && currentPlaylist.tracks && currentPlaylist.tracks.length > 0) {
+      if (currentPlaylist && currentPlaylist.tracks.length > 0) {
         playTrack(currentPlaylist.tracks[0]);
       }
       return;
     }
     initAudio();
+    const audio = audioRef.current;
+    if (!audio) return;
     if (isPlaying) {
-      audioRef.current.pause();
+      audio.pause();
       setIsPlaying(false);
     } else {
-      safePlay(audioRef.current, "control");
-      setIsPlaying(true);
+      safePlay(audio, "control").then((ok) => {
+        setIsPlaying(ok);
+        if (!ok) setPlaybackError("Couldn't start playback. Tap play to try again.");
+      });
     }
   }, [isPlaying, currentTrack, currentPlaylist, initAudio, playTrack]);
 
@@ -237,10 +293,18 @@ export function AudioPlayerProvider({ children }) {
       const tracks = currentPlaylist.tracks;
       const idx = tracks.findIndex((t) => t.id === currentTrack.id);
       const nextIdx = (idx + delta + tracks.length) % tracks.length;
+      // Single-track playlist: restart from the top rather than toggling pause
+      // (which is what playTrack would do for the same track id).
+      if (nextIdx === idx) {
+        const audio = audioRef.current;
+        if (!audio) return;
+        audio.currentTime = 0;
+        setCurrentTime(0);
+        safePlay(audio, "restart").then((ok) => setIsPlaying(ok));
+        return;
+      }
+      // playTrack already loads and starts the next track — no setTimeout needed.
       playTrack(tracks[nextIdx]);
-      setTimeout(() => {
-        safePlay(audioRef.current, "control").then(() => setIsPlaying(true));
-      }, 100);
     },
     [currentPlaylist, currentTrack, playTrack]
   );
@@ -256,7 +320,7 @@ export function AudioPlayerProvider({ children }) {
 
   const handleVolumeChange = useCallback((val: number) => setVolume(val), []);
 
-  const value = {
+  const value: AudioPlayerContextValue = {
     currentPlaylist,
     setCurrentPlaylist: selectPlaylist,
     currentTrack,
@@ -285,7 +349,7 @@ export function AudioPlayerProvider({ children }) {
   );
 }
 
-export function useAudioPlayer() {
+export function useAudioPlayer(): AudioPlayerContextValue {
   const ctx = useContext(AudioPlayerContext);
   if (!ctx) throw new Error("useAudioPlayer must be used within AudioPlayerProvider");
   return ctx;

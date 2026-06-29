@@ -21,7 +21,6 @@ import {
 } from "../utils/eqAnimation.ts";
 
 const RESTING_HEIGHTS = [5, 10, 7];
-const BAR_COUNT = 3;
 const MAX_HEIGHT = 16;
 const MIN_HEIGHT = 3;
 
@@ -36,7 +35,11 @@ function MiniEQ({
   const animRef = useRef<number | null>(null);
 
   useEffect(() => {
-    if (!isPlaying || !analyser) {
+    const prefersReducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+
+    if (!isPlaying || !analyser || prefersReducedMotion) {
       resetBarHeights(barsRef.current, RESTING_HEIGHTS);
       if (animRef.current) {
         cancelAnimationFrame(animRef.current);
@@ -67,7 +70,7 @@ function MiniEQ({
   }, [analyser, isPlaying]);
 
   return (
-    <div style={{ display: "flex", alignItems: "flex-end", gap: "2px", height: "16px", flexShrink: 0 }}>
+    <div aria-hidden="true" style={{ display: "flex", alignItems: "flex-end", gap: "2px", height: "16px", flexShrink: 0 }}>
       {[0, 1, 2].map((i) => (
         <div
           key={i}
@@ -143,7 +146,16 @@ export default function MiniPlayer() {
 
       {/* Track info — clickable to go to /music */}
       <div
+        role="button"
+        tabIndex={0}
+        aria-label="Open music player"
         onClick={() => navigate("/music")}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            navigate("/music");
+          }
+        }}
         style={{
           flex: 1,
           minWidth: 0,
@@ -178,6 +190,7 @@ export default function MiniPlayer() {
       <button
         onClick={handlePlayPause}
         title={isPlaying ? "Pause" : "Play"}
+        aria-label={isPlaying ? "Pause" : "Play"}
         style={{
           width: "34px",
           height: "34px",
@@ -196,12 +209,12 @@ export default function MiniPlayer() {
         onMouseLeave={(e) => (e.currentTarget.style.background = ACCENT_PURPLE)}
       >
         {isPlaying ? (
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
             <rect x="6" y="4" width="4" height="16" />
             <rect x="14" y="4" width="4" height="16" />
           </svg>
         ) : (
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
             <path d="M8 5v14l11-7z" />
           </svg>
         )}

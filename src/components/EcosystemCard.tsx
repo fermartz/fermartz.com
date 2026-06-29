@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { BG_DARK, BG_CARD, TEXT_PRIMARY, TEXT_MUTED } from "../theme.js";
 import { Reveal } from "./Effects.tsx";
+import { CtaLink } from "./CtaLink.tsx";
 
 type EcoProject = {
   subtitle: string;
@@ -152,41 +153,14 @@ function EcoColumn({ project }: { project: EcoProject }) {
       </div>
 
       {/* CTA */}
-      <a
+      <CtaLink
         href={project.link}
-        target="_blank"
-        rel="noopener noreferrer"
-        style={{
-          marginTop: "auto",
-          alignSelf: "flex-start",
-          display: "inline-flex",
-          alignItems: "center",
-          gap: "8px",
-          fontFamily: "monospace",
-          fontSize: "12px",
-          letterSpacing: "2px",
-          color: accent,
-          textDecoration: "none",
-          padding: "11px 22px",
-          border: `1px solid ${accent}40`,
-          borderRadius: "2px",
-          background: `${accent}08`,
-          transition: "all 0.3s ease",
-          textTransform: "uppercase",
-        }}
-        onMouseEnter={(e) => {
-          const el = e.currentTarget as HTMLElement;
-          el.style.background = `${accent}20`;
-          el.style.borderColor = accent;
-        }}
-        onMouseLeave={(e) => {
-          const el = e.currentTarget as HTMLElement;
-          el.style.background = `${accent}08`;
-          el.style.borderColor = `${accent}40`;
-        }}
+        accent={accent}
+        arrow
+        style={{ marginTop: "auto", alignSelf: "flex-start", fontSize: "12px", padding: "11px 22px" }}
       >
-        {project.linkText} →
-      </a>
+        {project.linkText}
+      </CtaLink>
     </div>
   );
 }

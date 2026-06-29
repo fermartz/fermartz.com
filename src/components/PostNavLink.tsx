@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ACCENT_GREEN, TEXT_PRIMARY, TEXT_MUTED, FONT_MONO } from "../theme.js";
+import type { PostModule } from "../utils/postLoader.ts";
 
-export function PostNavLink({ post, direction }: { post: any; direction: "prev" | "next" }) {
+export function PostNavLink({ post, direction }: { post: PostModule; direction: "prev" | "next" }) {
   const [hovered, setHovered] = useState(false);
   const isPrev = direction === "prev";
 

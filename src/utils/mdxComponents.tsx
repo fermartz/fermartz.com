@@ -1,3 +1,4 @@
+import type { ComponentPropsWithoutRef } from "react";
 import {
   ACCENT_GREEN,
   ACCENT_PURPLE,
@@ -7,7 +8,7 @@ import {
 } from "../theme.js";
 
 export const mdxComponents = {
-  h1: (props: any) => (
+  h1: (props: ComponentPropsWithoutRef<"h1">) => (
     <h1
       style={{
         fontFamily: FONT_MONO,
@@ -20,7 +21,7 @@ export const mdxComponents = {
       {...props}
     />
   ),
-  h2: (props: any) => (
+  h2: (props: ComponentPropsWithoutRef<"h2">) => (
     <h2
       style={{
         fontFamily: FONT_MONO,
@@ -33,7 +34,7 @@ export const mdxComponents = {
       {...props}
     />
   ),
-  h3: (props: any) => (
+  h3: (props: ComponentPropsWithoutRef<"h3">) => (
     <h3
       style={{
         fontFamily: FONT_MONO,
@@ -45,7 +46,7 @@ export const mdxComponents = {
       {...props}
     />
   ),
-  p: (props: any) => (
+  p: (props: ComponentPropsWithoutRef<"p">) => (
     <p
       style={{
         fontFamily: FONT_MONO,
@@ -57,21 +58,26 @@ export const mdxComponents = {
       {...props}
     />
   ),
-  a: (props: any) => (
-    <a
-      style={{
-        color: ACCENT_GREEN,
-        textDecoration: "underline",
-        textUnderlineOffset: "3px",
-        textDecorationColor: ACCENT_GREEN + "40",
-        transition: "text-decoration-color 0.2s",
-      }}
-      target="_blank"
-      rel="noopener noreferrer"
-      {...props}
-    />
-  ),
-  ul: (props: any) => (
+  a: ({ href, ...props }: ComponentPropsWithoutRef<"a">) => {
+    // Only open external links in a new tab; internal/#anchor links navigate
+    // in-place (and don't need rel="noopener").
+    const isExternal = typeof href === "string" && href.startsWith("http");
+    return (
+      <a
+        href={href}
+        style={{
+          color: ACCENT_GREEN,
+          textDecoration: "underline",
+          textUnderlineOffset: "3px",
+          textDecorationColor: ACCENT_GREEN + "40",
+          transition: "text-decoration-color 0.2s",
+        }}
+        {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+        {...props}
+      />
+    );
+  },
+  ul: (props: ComponentPropsWithoutRef<"ul">) => (
     <ul
       style={{
         fontFamily: FONT_MONO,
@@ -84,7 +90,7 @@ export const mdxComponents = {
       {...props}
     />
   ),
-  ol: (props: any) => (
+  ol: (props: ComponentPropsWithoutRef<"ol">) => (
     <ol
       style={{
         fontFamily: FONT_MONO,
@@ -97,8 +103,10 @@ export const mdxComponents = {
       {...props}
     />
   ),
-  li: (props: any) => <li style={{ marginBottom: "8px" }} {...props} />,
-  blockquote: (props: any) => (
+  li: (props: ComponentPropsWithoutRef<"li">) => (
+    <li style={{ marginBottom: "8px" }} {...props} />
+  ),
+  blockquote: (props: ComponentPropsWithoutRef<"blockquote">) => (
     <blockquote
       style={{
         borderLeft: `2px solid ${ACCENT_PURPLE}40`,
@@ -113,7 +121,7 @@ export const mdxComponents = {
       {...props}
     />
   ),
-  code: (props: any) => (
+  code: (props: ComponentPropsWithoutRef<"code">) => (
     <code
       style={{
         fontFamily: FONT_MONO,
@@ -126,7 +134,7 @@ export const mdxComponents = {
       {...props}
     />
   ),
-  pre: (props: any) => (
+  pre: (props: ComponentPropsWithoutRef<"pre">) => (
     <pre
       style={{
         fontFamily: FONT_MONO,
@@ -152,7 +160,7 @@ export const mdxComponents = {
       }}
     />
   ),
-  figure: (props: any) => (
+  figure: (props: ComponentPropsWithoutRef<"figure">) => (
     <figure
       style={{
         margin: "32px 0",

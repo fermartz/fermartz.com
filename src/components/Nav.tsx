@@ -35,9 +35,9 @@ export function Nav() {
   };
 
   const onEnter = (e: React.MouseEvent<HTMLElement>) =>
-    ((e.target as HTMLElement).style.color = ACCENT_GREEN);
+    (e.currentTarget.style.color = ACCENT_GREEN);
   const onLeave = (e: React.MouseEvent<HTMLElement>) =>
-    ((e.target as HTMLElement).style.color = TEXT_MUTED);
+    (e.currentTarget.style.color = TEXT_MUTED);
 
   return (
     <nav

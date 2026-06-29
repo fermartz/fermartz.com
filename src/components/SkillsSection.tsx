@@ -116,13 +116,13 @@ export function SkillsSection() {
                         cursor: "default",
                       }}
                       onMouseEnter={(e) => {
-                        const el = e.target as HTMLElement;
+                        const el = e.currentTarget;
                         el.style.borderColor = cat.color;
                         el.style.color = cat.color;
                         el.style.background = `${cat.color}15`;
                       }}
                       onMouseLeave={(e) => {
-                        const el = e.target as HTMLElement;
+                        const el = e.currentTarget;
                         el.style.borderColor = `${cat.color}20`;
                         el.style.color = TEXT_MUTED;
                         el.style.background = `${cat.color}08`;

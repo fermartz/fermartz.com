@@ -14,16 +14,22 @@ import type { Playlist, Track } from "../types.ts";
 
 /**
  * Safely start playback. Browsers reject play() if autoplay policy blocks it,
- * if the network fails, or if CORS headers are missing — we log and swallow
- * so the caller's state machine can continue. Surface-level errors from the
- * element itself are handled separately by the <audio> 'error' event
- * listener in AudioContext, which populates playbackError for the UI.
+ * if the network fails, or if CORS headers are missing. We log and resolve to
+ * a boolean — `true` only when playback actually started — so the caller can
+ * keep `isPlaying` in sync with reality instead of optimistically flipping it
+ * to true on a rejected promise. Surface-level errors from the element itself
+ * are also handled by the <audio> 'error' event listener in AudioContext,
+ * which populates playbackError for the UI.
  */
-export function safePlay(audio: HTMLAudioElement | null, label: string): Promise<void> {
-  if (!audio) return Promise.resolve();
-  return audio.play().catch((err) => {
+export async function safePlay(audio: HTMLAudioElement | null, label: string): Promise<boolean> {
+  if (!audio) return false;
+  try {
+    await audio.play();
+    return true;
+  } catch (err) {
     console.warn(`[audio] ${label} failed:`, err);
-  });
+    return false;
+  }
 }
 
 /**

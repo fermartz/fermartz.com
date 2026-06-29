@@ -1,6 +1,14 @@
+import type { ReactNode, KeyboardEvent } from "react";
 import { ACCENT_PURPLE, TEXT_MUTED, FONT_MONO } from "../../theme.js";
+import type { Playlist } from "../../types.ts";
 
-export function Breadcrumb({ playlist, onNavigate }: { playlist: any; onNavigate: (p: any) => void }) {
+export function Breadcrumb({
+  playlist,
+  onNavigate,
+}: {
+  playlist: Playlist | null;
+  onNavigate: (p: Playlist | null) => void;
+}) {
   const crumbStyle = {
     fontFamily: FONT_MONO,
     fontSize: "11px",
@@ -8,7 +16,7 @@ export function Breadcrumb({ playlist, onNavigate }: { playlist: any; onNavigate
     textTransform: "uppercase" as const,
   };
 
-  const parts: React.ReactNode[] = [];
+  const parts: ReactNode[] = [];
 
   if (!playlist) {
     parts.push(
@@ -17,13 +25,23 @@ export function Breadcrumb({ playlist, onNavigate }: { playlist: any; onNavigate
       </span>
     );
   } else {
+    const handleKeyDown = (e: KeyboardEvent<HTMLSpanElement>) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        onNavigate(null);
+      }
+    };
     parts.push(
       <span
         key="playlists"
+        role="button"
+        tabIndex={0}
+        aria-label="Back to playlists"
         style={{ ...crumbStyle, color: TEXT_MUTED, cursor: "pointer", transition: "color 0.2s" }}
         onClick={() => onNavigate(null)}
-        onMouseEnter={(e) => ((e.target as HTMLElement).style.color = ACCENT_PURPLE)}
-        onMouseLeave={(e) => ((e.target as HTMLElement).style.color = TEXT_MUTED)}
+        onKeyDown={handleKeyDown}
+        onMouseEnter={(e) => (e.currentTarget.style.color = ACCENT_PURPLE)}
+        onMouseLeave={(e) => (e.currentTarget.style.color = TEXT_MUTED)}
       >
         Playlists
       </span>,

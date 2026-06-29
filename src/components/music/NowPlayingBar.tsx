@@ -96,7 +96,7 @@ export function NowPlayingBar({
               textOverflow: "ellipsis",
             }}
           >
-            {hasTrack ? track.name : "Hit play. Start vibing."}
+            {hasTrack ? track?.name : "Hit play. Start vibing."}
           </div>
           <div
             style={{
@@ -108,7 +108,7 @@ export function NowPlayingBar({
               marginTop: "2px",
             }}
           >
-            {hasTrack ? `${track.style} · ${track.duration}` : ""}
+            {hasTrack ? `${track?.style} · ${track?.duration}` : ""}
           </div>
         </div>
         <div
@@ -151,6 +151,7 @@ export function NowPlayingBar({
         <input
           type="range"
           className="music-progress"
+          aria-label="Seek"
           min="0"
           max={safeDuration}
           value={safeCurrentTime}
@@ -171,7 +172,7 @@ export function NowPlayingBar({
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
           <ControlButton onClick={onPrev} title="Previous">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
               <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z" />
             </svg>
           </ControlButton>
@@ -179,6 +180,7 @@ export function NowPlayingBar({
           <button
             onClick={onPlayPause}
             title={isPlaying ? "Pause" : "Play"}
+            aria-label={isPlaying ? "Pause" : "Play"}
             style={{
               width: "39px",
               height: "39px",
@@ -196,19 +198,19 @@ export function NowPlayingBar({
             onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.background = ACCENT_PURPLE)}
           >
             {isPlaying ? (
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
                 <rect x="6" y="4" width="4" height="16" />
                 <rect x="14" y="4" width="4" height="16" />
               </svg>
             ) : (
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
                 <path d="M8 5v14l11-7z" />
               </svg>
             )}
           </button>
 
           <ControlButton onClick={onNext} title="Next">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
               <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" />
             </svg>
           </ControlButton>
@@ -217,6 +219,8 @@ export function NowPlayingBar({
         {!isMobile && (
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
             <svg
+              aria-hidden="true"
+              focusable="false"
               width="14"
               height="14"
               viewBox="0 0 24 24"
@@ -233,6 +237,7 @@ export function NowPlayingBar({
             <input
               type="range"
               className="music-volume"
+              aria-label="Volume"
               min="0"
               max="1"
               step="0.01"

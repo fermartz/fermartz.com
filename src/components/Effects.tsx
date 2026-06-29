@@ -1,5 +1,9 @@
-import { useState, useEffect, useRef, ReactNode } from "react";
+import { useState, useEffect, useRef, type ReactNode } from "react";
 import { ACCENT_GREEN } from "../theme.js";
+
+const prefersReducedMotion = () =>
+  typeof window !== "undefined" &&
+  window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
 // Glitch text effect
 export function GlitchText({ text, className = "" }: { text: string; className?: string }) {
@@ -7,9 +11,11 @@ export function GlitchText({ text, className = "" }: { text: string; className?:
   const chars = "!@#$%^&*()_+-=[]{}|;:,.<>?/~`01";
 
   useEffect(() => {
+    if (prefersReducedMotion()) return; // honor reduced-motion: show static text
+    let glitchInterval: ReturnType<typeof setInterval> | undefined;
     const interval = setInterval(() => {
       let iterations = 0;
-      const glitchInterval = setInterval(() => {
+      glitchInterval = setInterval(() => {
         setDisplay(
           text
             .split("")
@@ -27,7 +33,10 @@ export function GlitchText({ text, className = "" }: { text: string; className?:
         }
       }, 30);
     }, 8000);
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      if (glitchInterval) clearInterval(glitchInterval);
+    };
   }, [text]);
 
   return <span className={className}>{display}</span>;
@@ -39,9 +48,13 @@ export function TypeWriter({ text, speed = 50, delay = 0 }: { text: string; spee
   const [started, setStarted] = useState(false);
 
   useEffect(() => {
+    if (prefersReducedMotion()) {
+      setDisplayed(text); // honor reduced-motion: show full text, no typing
+      return;
+    }
     const timeout = setTimeout(() => setStarted(true), delay);
     return () => clearTimeout(timeout);
-  }, [delay]);
+  }, [delay, text]);
 
   useEffect(() => {
     if (!started) return;

@@ -7,6 +7,7 @@ import {
   TEXT_MUTED,
 } from "../theme.js";
 import { Reveal } from "./Effects.tsx";
+import { CtaLink } from "./CtaLink.tsx";
 
 export function WorkWithMe() {
   const services = [
@@ -53,7 +54,7 @@ export function WorkWithMe() {
               textTransform: "uppercase",
             }}
           >
-            Available — Freelance or Full-Time
+            Available — Full-Time or Freelance
           </div>
           <h2
             style={{
@@ -142,37 +143,9 @@ export function WorkWithMe() {
         </Reveal>
 
         <Reveal delay={300}>
-          <a
-            href="mailto:fer.martz@icloud.com"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "8px",
-              fontFamily: "monospace",
-              fontSize: "13px",
-              letterSpacing: "2px",
-              color: ACCENT_PINK,
-              textDecoration: "none",
-              padding: "14px 40px",
-              border: `1px solid ${ACCENT_PINK}40`,
-              borderRadius: "2px",
-              background: `${ACCENT_PINK}08`,
-              transition: "all 0.3s ease",
-              textTransform: "uppercase",
-            }}
-            onMouseEnter={(e) => {
-              const el = e.target as HTMLElement;
-              el.style.background = `${ACCENT_PINK}20`;
-              el.style.borderColor = ACCENT_PINK;
-            }}
-            onMouseLeave={(e) => {
-              const el = e.target as HTMLElement;
-              el.style.background = `${ACCENT_PINK}08`;
-              el.style.borderColor = `${ACCENT_PINK}40`;
-            }}
-          >
-            LET'S BUILD SOMETHING →
-          </a>
+          <CtaLink href="mailto:fer.martz@icloud.com" accent={ACCENT_PINK} arrow style={{ padding: "14px 40px" }}>
+            LET'S BUILD SOMETHING
+          </CtaLink>
         </Reveal>
       </div>
     </section>

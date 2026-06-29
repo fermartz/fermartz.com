@@ -4,6 +4,8 @@ import { ACCENT_PURPLE, BG_DARK, TEXT_PRIMARY } from "../theme.js";
 export function HexGrid() {
   return (
     <svg
+      aria-hidden="true"
+      focusable="false"
       style={{
         position: "fixed",
         top: 0,
@@ -45,4 +47,12 @@ export const globalStyles = `
   ::-webkit-scrollbar-thumb { background: ${ACCENT_PURPLE}40; border-radius: 3px; }
   @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
   @keyframes float { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(-8px); } }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
 `;

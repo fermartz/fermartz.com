@@ -18,7 +18,11 @@ export function EQVisualizer({
   const animRef = useRef<number | null>(null);
 
   useEffect(() => {
-    if (!isPlaying || !analyser) {
+    const prefersReducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+
+    if (!isPlaying || !analyser || prefersReducedMotion) {
       resetBarHeights(barsRef.current, RESTING_HEIGHTS);
       if (animRef.current) {
         cancelAnimationFrame(animRef.current);
@@ -46,7 +50,7 @@ export function EQVisualizer({
   }, [analyser, isPlaying]);
 
   return (
-    <div style={{ display: "flex", alignItems: "flex-end", gap: "2px", height: "28px" }}>
+    <div aria-hidden="true" style={{ display: "flex", alignItems: "flex-end", gap: "2px", height: "28px" }}>
       {Array.from({ length: BAR_COUNT }, (_, i) => (
         <div
           key={i}

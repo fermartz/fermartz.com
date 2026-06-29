@@ -15,6 +15,7 @@ export function ControlButton({
     <button
       onClick={onClick}
       title={title}
+      aria-label={title}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
