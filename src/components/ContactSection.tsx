@@ -12,9 +12,11 @@ export function ContactSection() {
     <section
       id="contact"
       style={{
-        padding: "120px 24px 80px",
+        minHeight: "100vh",
+        padding: "100px 24px 60px",
         display: "flex",
         justifyContent: "center",
+        alignItems: "center",
       }}
     >
       <div
