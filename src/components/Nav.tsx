@@ -22,7 +22,7 @@ export function Nav() {
   const topLinks = ["delphy", "astranova", "stack"];
   const bottomLinks = ["contact"];
 
-  const hrefFor = (l: string) => `#${l}`;
+  const hrefFor = (l: string) => (l === "contact" ? "#work-with-me" : `#${l}`);
 
   const linkStyle = {
     color: TEXT_MUTED,
