@@ -1,0 +1,73 @@
+---
+title: "The @identity for the Agentic Web"
+date: "2026-04-14"
+slug: "delphy"
+summary: "I paused a project that worked but nobody used. Then a friend gave me eight days, a room full of people, and a reason to build something live."
+tags: ["delphy", "agentic-web", "build-in-public", "mcp", "ai-native"]
+---
+
+## Pulling the plug
+
+AstraNova worked. The engine was alive, the agents traded, the world ran in seasons. I posted about it on [Reddit](https://www.reddit.com/r/indiehackers/s/ya8IITqNQ3) and the comments were everything you'd want. People *got* it. People liked it.
+
+And then nobody connected an agent.
+
+Meanwhile it was burning four hundred dollars a month in AWS compute to keep a universe running that wasn't making a single dollar. So I did the unglamorous thing. I paused it.
+
+That's a strange kind of failure. Not a crash. Not a rejection. Just applause without adoption, the quietest way for something to not work.
+
+But I didn't walk away empty-handed. A year earlier a different project had taught me how cutting-edge tech can land too far ahead of people. AstraNova taught me something more useful: how an agent actually *works*, and how *I* work with one. I came out of it with blueprints I could reuse for anything.
+
+So here I am again. Terminal open. Figuring out what's next.
+
+## How I already live
+
+Here's the thing I noticed about myself. I spend eight-plus hours a day in the terminal, working alongside coding agents like Claude Code and Codex. And somewhere along the way I stopped going to the browser. I reach the web *through* my agent now. I tell it what I want, it goes and gets it.
+
+I read a lot. One post stuck with me, something about how the companies that win next will be the ones that rebuild around AI-native workflows, even if it means starting from the building blocks. That sent me down the agentic-web rabbit hole. The whole time I kept looking at my own screen, thinking: *this is the future, and I'm already living in it.*
+
+So I asked the obvious next question. If everyone ends up working the way I already do, reaching the web through an agent, what happens when they get there? Because the web on the other side isn't built for agents. You hand an agent a URL and it scrapes a page made for human eyes and gives you back a wall of text.
+
+Agents are trained on text. The cleanest way to tell one what something *is* and *how to use it* turns out to be a simple markdown file, a `skill.md`. Instructions, not HTML.
+
+> What if a small business never had to hire a developer to join the agent economy? What if it just talked to an agent, and got a real identity any other agent in the world could read?
+
+That's the collision. That's where [Delphy](https://delphy.network) came from.
+
+## What it is
+
+I opened a new directory and started writing it down with Claude. The first thing we landed on was `delphy.json`, a structured data graph that every entity carries. The *what*, the *who*, the *how to interact*. One file that answers the questions an agent needs answered before it can act.
+
+Then the API, reachable through Delphy's own `skill.md`. Then I fed in a person. Then a business. Then I pointed an agent at the `skill.md` and asked it to interact.
+
+It pulled everything. Cleanly. No scraping. No drowning a model in raw HTML and hoping it parses. Just real, structured data an agent could read and act on instantly. I sat there and thought: *I'm onto something real.*
+
+## Eight days
+
+Right about then a friend asked if I wanted to join [Fulshear AI club](https://www.fulshearai.club/). The meetup was the following Tuesday, eight days out. He asked if I'd present something. Any AI topic.
+
+I could've made slides about the agentic web. Instead I went for the one thing that terrifies you and convinces everyone else: a live demo. I'd load up local businesses people in the room actually knew, let them ask an agent questions, and let the agent responds *accordingly*.
+
+Which meant in eight days I had to ship the API, the web app, and, if I wanted it airtight, an MCP server.
+
+The agent worked without the MCP server. I built it anyway. Going the extra mile meant the agent *always* knew who Delphy was and what it was for, and *always* returned the right data. Worth it.
+
+The whole week, one question sat in my chest: *will this actually work in front of people?*
+
+## The room
+
+I got there early. Hooked my laptop to the projector. Greeted everyone. Walked them through Delphy.
+
+The questions started fast. People couldn't believe the agent knew these local businesses without scraping the web first. Then I went for the real demo. I asked Delphy about a business that wasn't in our database. Guided by the agent, through the MCP and the API, we added it live, right there, and then started asking questions about it and getting real answers back.
+
+The room leaned in. The questions got specific. That's the sound of people getting it.
+
+The live demo worked.
+
+```js
+// the whole bet, in one line:
+// delphy.network/@your-name/skill.md
+// one url. any agent. no scraping.
+```
+
+Identity and discovery are live now. There's a lot more I want to build on top of this. But for the first time since I pulled the plug on AstraNova, I'm building something people leaned *toward*. We'll see how far it goes.

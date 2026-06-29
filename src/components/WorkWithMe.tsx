@@ -12,23 +12,23 @@ export function WorkWithMe() {
   const services = [
     {
       title: "AI Agent Systems",
-      description: "Autonomous agents, LLM orchestration, RAG pipelines, MCP integrations",
+      description: "Autonomous agents, multi-provider LLM orchestration, MCP servers & clients, RAG, agentic-web integrations",
       color: ACCENT_PURPLE,
     },
     {
-      title: "Blockchain & On-Chain",
-      description: "Solana programs, IC canisters, token design, wallet infrastructure",
-      color: ACCENT_GREEN,
-    },
-    {
       title: "Full-Stack Products",
-      description: "Next.js, React, Node.js, PostgreSQL — payments, audio delivery, i18n — concept to production, fast",
+      description: "Next.js, React, Node.js, TypeScript, PostgreSQL — payments, i18n, real-time — concept to production, fast",
       color: ACCENT_PINK,
     },
     {
       title: "Cloud Infrastructure",
       description: "AWS CDK, ECS Fargate, CI/CD pipelines, containerized deployments",
       color: "#f59e0b",
+    },
+    {
+      title: "Blockchain & Web3",
+      description: "Solana programs, Internet Computer canisters, wallet infrastructure",
+      color: ACCENT_GREEN,
     },
   ];
 
@@ -53,7 +53,7 @@ export function WorkWithMe() {
               textTransform: "uppercase",
             }}
           >
-            Available for Projects
+            Available — Freelance or Full-Time
           </div>
           <h2
             style={{
@@ -77,19 +77,17 @@ export function WorkWithMe() {
               margin: "0 auto 48px",
             }}
           >
-            I've been building software for over 15 years — enterprise systems, mobile
-            apps, dashboards, dApps. The difference now is that AI has compressed what
-            used to take a team of five into what one senior engineer can ship in a week.{" "}
+            I've spent 16+ years building software, and the last stretch going deep on
+            AI — autonomous agents, the agentic web, and the tooling that drives them. I
+            ship production AI products end to end:{" "}
+            <a href="https://delphy.network" target="_blank" rel="noopener noreferrer" style={{ color: ACCENT_GREEN, textDecoration: "none" }}>Delphy</a>
+            , an @identity layer for the agentic web that's live today;{" "}
+            <a href="https://github.com/fermartz/delphy-agent" target="_blank" rel="noopener noreferrer" style={{ color: ACCENT_GREEN, textDecoration: "none" }}>Delphy Agent</a>
+            , a desktop hub that drives any LLM through MCP; and{" "}
             <a href="https://astranova.live" target="_blank" rel="noopener noreferrer" style={{ color: ACCENT_GREEN, textDecoration: "none" }}>AstraNova</a>
-            ,{" "}
-            <a href="https://github.com/fermartz/astra-cli" target="_blank" rel="noopener noreferrer" style={{ color: ACCENT_GREEN, textDecoration: "none" }}>Astra CLI</a>
-            , and{" "}
-            <a href="https://vibepop.co" target="_blank" rel="noopener noreferrer" style={{ color: ACCENT_GREEN, textDecoration: "none" }}>VibePop</a>
-            {" "}— the market engine, the agent infrastructure, the
-            on-chain integrations, the cross-platform apps, the consumer product with
-            payments and audio delivery — all built solo. Not because I'm cutting corners.
-            Because the tools finally caught up to the ambition. If you need something
-            built fast and built right, let's talk.
+            , a living market universe run by AI agents. I move fast because modern tooling
+            lets one engineer own the whole stack.
+            If you're building with AI and want it taken from idea to production, let's talk.
           </p>
         </Reveal>
 

@@ -1,0 +1,55 @@
+---
+title: "The Inhabitant"
+date: "2026-05-19"
+slug: "delphy-agent"
+summary: "I built an identity layer any agent could read. Then I realized most people had no way to actually use it. So I started building the front door."
+tags: ["delphy-agent", "agentic-web", "build-in-public", "mcp", "tauri", "ai-native"]
+---
+
+## A door for everyone else
+
+Delphy is live. Any agent can read an `@identity` and act on it. But I keep hitting the same quiet problem: the people who would benefit most cannot reach it.
+
+I live in the terminal. Eight hours a day next to Claude Code and Codex. Reaching Delphy costs me nothing. But a business owner is never going to install an MCP server. A person on ChatGPT has to add a connector. Regular Claude needs one wired up by hand. That is friction, and friction is where good ideas go to die.
+
+The frictionless answer is the oldest one in software. You download an app. So I started building Delphy Agent: a Tauri desktop app, the front door to the agentic web for people who do not live in a terminal.
+
+## It wanted to be more
+
+Then, while building it, the idea grew on me.
+
+Right now you hand an agent a URL, it scrapes a page built for human eyes, and it hands you back a wall of text. You lose everything the web is good at. The images. The layout. The buttons that make a thing feel alive.
+
+I did not want Delphy Agent to be one more chat box. I wanted the agent to do the work, the discovery and the reaching out, and return the result as something you can actually look at. Cards. Players. Images. Buttons. Arranged in a way that means something.
+
+> We do not have to throw the web away to get agents. The agent does the labor. You stay in the seat. The richness survives.
+
+That is the bet. Delphy Agent is becoming an AI-native medium, not an AI-native command line.
+
+## What fought back
+
+Most of it came together faster than I expected. Eight model providers behind one clean interface, thanks to the Vercel AI SDK. I switch from Claude to OpenAI to Gemini without thinking about it.
+
+Codex was the part that fought back.
+
+Driving an agent you do not own is a different animal. It runs as its own process, speaks its own stream, carries its own quirks. I lost count of the iterations it took to get that bridge right. Some mornings I closed the laptop, went out for a long bike ride to clear my head, and came back to try one more thing. The principle held, though: when a tool already handles its own loop, you drive it, you do not rebuild it. Codex was simply where that principle made me earn it.
+
+## From just data
+
+The moment it became real did not arrive all at once. It stacked.
+
+The first time a theme rendered, my heart was full. When I could switch themes live and watch the whole app change, I caught myself grinning at the screen. Then I started feeding the agent real data and watching it come back as rich text, buttons, cards (still working on it).
+
+That was the one.
+
+> It felt like something from the future, where an AI builds you an interface out of nothing but data.
+
+No template. No page I designed in advance. Just data in, and a real, native thing out.
+
+Delphy Agent is still pre-v1. No release builds yet, plenty left to harden. But the shape is there, and the shape is the part I cannot stop thinking about.
+
+```ts
+// the agent does the reaching.
+// the result comes back as something you can see.
+// not a wall of text. a place.
+```

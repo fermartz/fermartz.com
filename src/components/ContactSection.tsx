@@ -1,8 +1,9 @@
-import { ACCENT_GREEN, TEXT_PRIMARY, TEXT_MUTED } from "../theme.js";
+import { ACCENT_GREEN, ACCENT_PINK, TEXT_PRIMARY, TEXT_MUTED } from "../theme.js";
 import { Reveal } from "./Effects.tsx";
 
 export function ContactSection() {
   const links = [
+    { label: "EMAIL", href: "mailto:fer.martz@icloud.com", color: ACCENT_PINK },
     { label: "GITHUB", href: "https://github.com/fermartz", color: ACCENT_GREEN },
     { label: "X / TWITTER", href: "https://twitter.com/fer_martz", color: "#1d9bf0" },
   ];
@@ -62,8 +63,9 @@ export function ContactSection() {
               <a
                 key={l.label}
                 href={l.href}
-                target="_blank"
-                rel="noopener noreferrer"
+                {...(l.href.startsWith("mailto:")
+                  ? {}
+                  : { target: "_blank", rel: "noopener noreferrer" })}
                 style={{
                   fontFamily: "monospace",
                   fontSize: "12px",

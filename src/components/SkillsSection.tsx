@@ -10,29 +10,29 @@ import { Reveal } from "./Effects.tsx";
 export function SkillsSection() {
   const categories = [
     {
-      label: "LANGUAGES & FRAMEWORKS",
-      skills: ["TypeScript", "Node.js", "React", "Next.js", "Rust", "Motoko", "Python"],
-      color: ACCENT_GREEN,
-    },
-    {
       label: "AI & AGENTS",
-      skills: ["Anthropic", "OpenAI", "Gemini", "AWS Bedrock", "Vercel AI SDK", "ElizaOS", "MCP", "RAG"],
+      skills: ["Autonomous Agents", "Multi-Agent Systems", "MCP (servers + clients)", "RAG", "Agentic Web"],
       color: ACCENT_PURPLE,
     },
     {
-      label: "BLOCKCHAIN & CRYPTO",
-      skills: ["Solana", "Internet Computer", "Bitcoin PSBTs", "Chain-Key Crypto", "AMM Design", "Tokenomics"],
+      label: "LLM PROVIDERS",
+      skills: ["Anthropic / Claude", "OpenAI", "Gemini", "xAI", "Vercel AI SDK", "AWS Bedrock"],
+      color: ACCENT_GREEN,
+    },
+    {
+      label: "LANGUAGES & FRAMEWORKS",
+      skills: ["TypeScript", "Node.js", "React", "Next.js", "Rust", "Motoko", "Python"],
+      color: ACCENT_PINK,
+    },
+    {
+      label: "BLOCKCHAIN & WEB3",
+      skills: ["Solana", "Internet Computer", "Bitcoin PSBTs", "Chain-Key Cryptography"],
       color: "#f59e0b",
     },
     {
       label: "INFRASTRUCTURE",
       skills: ["AWS ECS Fargate", "AWS CDK", "S3", "RDS", "Docker", "PostgreSQL", "Supabase", "DynamoDB"],
       color: "#f97316",
-    },
-    {
-      label: "CREATIVE & DESIGN",
-      skills: ["SVG / Illustrator", "Worldbuilding & Lore", "Character Design", "Content Strategy"],
-      color: ACCENT_PINK,
     },
   ];
 
@@ -153,7 +153,7 @@ export function SkillsSection() {
               margin: "56px auto 0",
             }}
           >
-            "The system stopped feeling like a model. It started feeling like a place."
+            "I take products from idea to production — and I work as well inside a team as I do owning the whole stack."
           </div>
         </Reveal>
       </div>

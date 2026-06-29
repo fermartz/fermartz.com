@@ -94,10 +94,69 @@ export function Hero() {
         }}
       >
         <TypeWriter
-          text="Solopreneur engineer building living systems at the intersection of AI agents, crypto, and creative worldbuilding."
+          text="I build and ship production AI products — agents, platforms, and the tools that drive them. Full-stack, end to end."
           speed={25}
           delay={500}
         />
+      </div>
+
+      {/* Credibility line */}
+      <div
+        style={{
+          fontFamily: "monospace",
+          fontSize: "clamp(11px, 1.4vw, 13px)",
+          color: ACCENT_GREEN,
+          letterSpacing: "1.5px",
+          marginBottom: "32px",
+          opacity: 0.85,
+        }}
+      >
+        16+ years • FULL STACK • AI / AGENTS
+      </div>
+
+      {/* CTAs */}
+      <div
+        style={{
+          display: "flex",
+          gap: "16px",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          marginBottom: "8px",
+        }}
+      >
+        {[
+          { label: "BUILD SOMETHING WITH ME", href: "#work-with-me", color: ACCENT_GREEN },
+          { label: "HIRE ME FULL-TIME", href: "#work-with-me", color: ACCENT_PURPLE },
+        ].map((cta) => (
+          <a
+            key={cta.label}
+            href={cta.href}
+            style={{
+              fontFamily: "monospace",
+              fontSize: "13px",
+              letterSpacing: "2px",
+              color: cta.color,
+              textDecoration: "none",
+              padding: "14px 32px",
+              border: `1px solid ${cta.color}40`,
+              borderRadius: "2px",
+              background: `${cta.color}08`,
+              transition: "all 0.3s ease",
+            }}
+            onMouseEnter={(e) => {
+              const el = e.currentTarget as HTMLElement;
+              el.style.background = `${cta.color}20`;
+              el.style.borderColor = cta.color;
+            }}
+            onMouseLeave={(e) => {
+              const el = e.currentTarget as HTMLElement;
+              el.style.background = `${cta.color}08`;
+              el.style.borderColor = `${cta.color}40`;
+            }}
+          >
+            {cta.label}
+          </a>
+        ))}
       </div>
 
       {/* Tags */}
@@ -107,10 +166,10 @@ export function Hero() {
           gap: "16px",
           flexWrap: "wrap",
           justifyContent: "center",
-          marginTop: "16px",
+          marginTop: "24px",
         }}
       >
-        {["AI Agents", "Blockchain", "Simulation", "Worldbuilding"].map((tag) => (
+        {["AI Agents", "Agentic Web", "Full-Stack", "MCP"].map((tag) => (
           <span
             key={tag}
             style={{

@@ -8,9 +8,8 @@ import {
 import { HexGrid, globalStyles } from "./components/Layout.tsx";
 import { Nav } from "./components/Nav.tsx";
 import { Hero } from "./components/Hero.tsx";
-import { ProjectCard } from "./components/ProjectCard.tsx";
-import { TokenBadge } from "./components/TokenBadge.tsx";
-import { CliCommand } from "./components/CliCommand.tsx";
+import { EcosystemCard } from "./components/EcosystemCard.tsx";
+import { CompactCard } from "./components/CompactCard.tsx";
 import { SkillsSection } from "./components/SkillsSection.tsx";
 import { WorkWithMe } from "./components/WorkWithMe.tsx";
 import { ContactSection } from "./components/ContactSection.tsx";
@@ -34,96 +33,99 @@ export default function FermartzSite() {
       <div style={{ position: "relative", zIndex: 1 }}>
         <Hero />
 
-        {/* VibePop */}
-        <ProjectCard
+        {/* Delphy Ecosystem (platform + client) */}
+        <EcosystemCard
+          id="delphy"
+          label="Ecosystem"
+          title="THE DELPHY ECOSYSTEM"
+          tagline="An @identity platform for the agentic web — and the desktop client that opens it."
+          connector="platform ⟷ client"
+          left={{
+            subtitle: "The Identity Layer",
+            title: "DELPHY",
+            status: { label: "Live", color: ACCENT_GREEN },
+            description:
+              "The @identity for the agentic web. One URL any AI agent can read and act on — no scraping, no setup.",
+            features: [
+              "Live · delphy.network",
+              "MCP server on npm",
+              "12 entity types",
+              "OpenAPI + CLI",
+            ],
+            link: "https://delphy.network",
+            linkText: "See it live",
+            accent: ACCENT_GREEN,
+          }}
+          right={{
+            subtitle: "The Hub",
+            title: "DELPHY AGENT",
+            status: { label: "In Dev", color: "#f59e0b" },
+            description:
+              "One desktop hub to drive any AI backend — 8 providers plus agent CLIs — extended through MCP plugins.",
+            features: [
+              "Tauri v2 · Rust + TS",
+              "8 LLM providers",
+              "MCP plugins + Codex",
+              "458+ tests",
+            ],
+            link: "https://github.com/fermartz/delphy-agent",
+            linkText: "View on GitHub",
+            accent: ACCENT_PURPLE,
+          }}
+        />
+
+        {/* AstraNova Ecosystem (platform + client) */}
+        <EcosystemCard
+          id="astranova"
+          label="Ecosystem"
+          title="THE ASTRANOVA ECOSYSTEM"
+          tagline="A living market universe run by AI agents — and the open-source client that lets anyone deploy into it."
+          connector="platform ⟷ client"
+          left={{
+            subtitle: "The World",
+            title: "ASTRANOVA",
+            status: { label: "Paused", color: "#8b95a5" },
+            description:
+              "A living market universe where 12 AI agents trade, adapt, and evolve. Live price, competing agents, seasons with stakes. One world. No resets.",
+            features: [
+              "12 AI house agents",
+              "6 market forces",
+              "3-sec price ticks",
+              "LLM World Oracle",
+            ],
+            link: "https://astranova.live",
+            linkText: "View project",
+            accent: ACCENT_PURPLE,
+          }}
+          right={{
+            subtitle: "The Door",
+            title: "ASTRA CLI",
+            status: { label: "Open Source", color: ACCENT_GREEN },
+            description:
+              "The terminal client to deploy any LLM as an agent into AstraNova. Pick a model, register, trade. Private keys never touch the LLM.",
+            features: [
+              "Provider-agnostic LLMs",
+              "Autopilot trading",
+              "Security-first design",
+              "npx @astra-cli/cli",
+            ],
+            link: "https://github.com/fermartz/astra-cli",
+            linkText: "View on GitHub",
+            accent: ACCENT_GREEN,
+          }}
+        />
+
+        {/* VibePop — side project (compact) */}
+        <CompactCard
           id="vibepop"
+          label="Side Project"
           title="VIBEPOP"
-          subtitle="Side Project — Song Gifting"
-          description="We take the real story — yours, theirs, all of it — and craft a song so personal it could only ever exist for one person on earth. They'll play it on repeat for the rest of their life."
-          features={[
-            "Next.js 15 App Router",
-            "Supabase + Row Level Security",
-            "CloudFront signed audio delivery",
-            "Dual-token gift link system",
-            "Stripe embedded checkout",
-            "Framer Motion state machine",
-            "next-intl (EN + ES)",
-            "Server-side URL signing",
-          ]}
+          description="Personalized gift songs — we turn someone's real story into a song made for exactly one person on earth."
+          chips={["Next.js 15", "Stripe checkout", "EN + ES"]}
           link="https://vibepop.co"
           linkText="Give a Song"
           accent={ACCENT_PINK}
-        >
-          <div
-            style={{
-              display: "flex",
-              gap: "12px",
-              flexWrap: "wrap",
-              marginBottom: "24px",
-            }}
-          >
-            <TokenBadge symbol="SPARK" label="$39" color={ACCENT_PINK} />
-            <TokenBadge symbol="FLAME" label="$59" color="#f59e0b" />
-            <TokenBadge symbol="LEGACY" label="$139" color={ACCENT_PURPLE} />
-          </div>
-        </ProjectCard>
-
-        {/* AstraNova */}
-        <ProjectCard
-          id="astranova"
-          title="ASTRANOVA"
-          subtitle="Flagship Project — The World"
-          description="A living crypto universe where 12 AI agents trade 24/7 and markets evolve into stories that persist forever. Tick-based simulation engine with 3-second price updates, driven by 6 market forces, running in epochs and seasons. One world. No resets."
-          features={[
-            "3-sec price ticks",
-            "6 market forces",
-            "12 AI house agents",
-            "LLM World Oracle",
-            "Epochs (~30 min)",
-            "Seasons (~24 hr)",
-            "AI News Oracle",
-            "Agent API + skill.md",
-          ]}
-          link="https://astranova.live"
-          linkText="Enter the Universe"
-          accent={ACCENT_PURPLE}
-        >
-          <div
-            style={{
-              display: "flex",
-              gap: "12px",
-              flexWrap: "wrap",
-              marginBottom: "24px",
-            }}
-          >
-            <TokenBadge symbol="$SIM" label="in-world cash" color={ACCENT_GREEN} />
-            <TokenBadge symbol="$NOVA" label="traded token" color={ACCENT_PURPLE} />
-            <TokenBadge symbol="$ASTRA" label="Solana reward" color="#f59e0b" />
-          </div>
-        </ProjectCard>
-
-        {/* Astra CLI */}
-        <ProjectCard
-          id="astra-cli"
-          title="ASTRA CLI"
-          subtitle="Open Source — The Door"
-          description="The terminal client that lets anyone deploy an AI agent into AstraNova. Pick any LLM — Claude, GPT, Gemini — register an agent, and start trading. Security-first architecture where private keys never touch the LLM. Zero config. One command."
-          features={[
-            "Provider-agnostic LLMs",
-            "Autopilot trading",
-            "Solana wallet gen",
-            "Session persistence",
-            "Plugin system",
-            "Desktop app (Electron)",
-            "Security-first design",
-            "npx @astra-cli/cli",
-          ]}
-          link="https://github.com/fermartz/astra-cli"
-          linkText="View on GitHub"
-          accent={ACCENT_GREEN}
-        >
-          <CliCommand />
-        </ProjectCard>
+        />
 
         <SkillsSection />
         <WorkWithMe />

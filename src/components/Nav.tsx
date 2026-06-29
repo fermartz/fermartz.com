@@ -19,8 +19,11 @@ export function Nav() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  const topLinks = ["vibepop", "astranova", "astra-cli", "stack"];
+  const topLinks = ["delphy", "astranova", "stack"];
   const bottomLinks = ["contact"];
+
+  const hrefFor = (l: string) =>
+    l === "contact" ? "mailto:fer.martz@icloud.com" : `#${l}`;
 
   const linkStyle = {
     color: TEXT_MUTED,
@@ -79,7 +82,7 @@ export function Nav() {
             }}
           >
             {topLinks.map((l) => (
-              <a key={l} href={`#${l}`} style={linkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>
+              <a key={l} href={hrefFor(l)} style={linkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>
                 {l}
               </a>
             ))}
@@ -94,7 +97,7 @@ export function Nav() {
             }}
           >
             {bottomLinks.map((l) => (
-              <a key={l} href={`#${l}`} style={linkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>
+              <a key={l} href={hrefFor(l)} style={linkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>
                 {l}
               </a>
             ))}
@@ -109,7 +112,7 @@ export function Nav() {
       ) : (
         <div style={{ display: "flex", gap: "24px" }}>
           {[...topLinks, ...bottomLinks].map((l) => (
-            <a key={l} href={`#${l}`} style={linkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>
+            <a key={l} href={hrefFor(l)} style={linkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>
               {l}
             </a>
           ))}
